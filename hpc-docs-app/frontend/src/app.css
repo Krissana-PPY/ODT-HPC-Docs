@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		@apply bg-gray-50 text-gray-900 font-sans;
+	}
+
+	h1 {
+		@apply text-3xl font-bold text-gray-900 mb-4;
+	}
+
+	h2 {
+		@apply text-2xl font-semibold text-gray-800 mb-3 mt-8;
+	}
+
+	h3 {
+		@apply text-xl font-semibold text-gray-700 mb-2 mt-6;
+	}
+
+	h4 {
+		@apply text-lg font-medium text-gray-700 mb-2 mt-4;
+	}
+
+	p {
+		@apply text-gray-700 leading-relaxed mb-4;
+	}
+
+	a {
+		@apply text-primary-600 hover:text-primary-800 underline;
+	}
+
+	ul {
+		@apply list-disc list-inside mb-4 space-y-1;
+	}
+
+	ol {
+		@apply list-decimal list-inside mb-4 space-y-1;
+	}
+
+	li {
+		@apply text-gray-700 leading-relaxed;
+	}
+
+	table {
+		@apply w-full border-collapse mb-6;
+	}
+
+	th {
+		@apply bg-primary-700 text-white px-4 py-3 text-left font-semibold text-sm;
+	}
+
+	td {
+		@apply border border-gray-200 px-4 py-3 text-sm text-gray-700;
+	}
+
+	tr:nth-child(even) td {
+		@apply bg-gray-50;
+	}
+
+	tr:hover td {
+		@apply bg-primary-50;
+	}
+
+	blockquote {
+		@apply border-l-4 border-primary-500 pl-4 italic text-gray-600 my-4;
+	}
+
+	hr {
+		@apply border-gray-200 my-8;
+	}
+}
+
+@layer components {
+	/* Code blocks with Shiki */
+	pre {
+		@apply rounded-lg overflow-x-auto my-4 text-sm leading-relaxed;
+		padding: 1.25rem !important;
+	}
+
+	code:not(pre code) {
+		@apply bg-gray-100 text-primary-700 px-1.5 py-0.5 rounded text-sm font-mono;
+	}
+
+	/* Warning box */
+	.warning-box {
+		@apply bg-amber-50 border border-amber-300 rounded-lg p-4 mb-4;
+	}
+
+	/* Info box */
+	.info-box {
+		@apply bg-blue-50 border border-blue-300 rounded-lg p-4 mb-4;
+	}
+
+	/* Sidebar active */
+	.sidebar-link {
+		@apply flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-600 hover:bg-primary-50 hover:text-primary-700 transition-colors cursor-pointer;
+	}
+
+	.sidebar-link.active {
+		@apply bg-primary-100 text-primary-700 font-medium;
+	}
+
+	.sidebar-link-sub {
+		@apply flex items-center gap-2 pl-6 pr-3 py-1.5 rounded-lg text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer;
+	}
+
+	.sidebar-link-sub.active {
+		@apply bg-primary-50 text-primary-600 font-medium;
+	}
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-track {
+	@apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply bg-gray-400 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	@apply bg-gray-500;
+}
