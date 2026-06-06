@@ -35,7 +35,7 @@ services:
     networks:
       - hpc-docs-network
 
-  # Nginx - HTTPS reverse proxy
+  # Nginx - HTTPS only reverse proxy (port 80 disabled)
   nginx:
     build:
       context: ./nginx
@@ -43,7 +43,6 @@ services:
     container_name: hpc-docs-nginx
     restart: unless-stopped
     ports:
-      - "80:80"
       - "443:443"
     depends_on:
       - frontend
