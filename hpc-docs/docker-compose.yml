@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hpc-docs-nextjs
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - hpc-net
+
+  nginx:
+    image: nginx:alpine
+    container_name: hpc-docs-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - nextjs
+    networks:
+      - hpc-net
+
+networks:
+  hpc-net:
+    driver: bridge
