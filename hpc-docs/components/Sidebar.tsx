@@ -49,12 +49,7 @@ const navItems = [
     href: "/software",
     label: "Software & Environment",
     icon: Package,
-    description: "รายการซอฟต์แวร์",
-    subtopics: [
-      { label: "Environment Modules", hash: "#modules" },
-      { label: "รายการโมดูลสำคัญ", hash: "#important" },
-      { label: "ซอฟต์แวร์หลักของระบบ", hash: "#core" },
-    ],
+    description: "รายการซอฟต์แวร์"
   },
   {
     href: "/slurm-commands",
@@ -63,8 +58,8 @@ const navItems = [
     description: "คำสั่งที่จำเป็น",
     subtopics: [
       { label: "ตารางคำสั่งทั่วไป", hash: "#general" },
-      { label: "สถานะคิวงาน (Job State)", hash: "#job-state" },
-      { label: "สถานะโหนด (Node State)", hash: "#node-state" },
+      { label: "ตรวจสอบสถานะ Cluster", hash: "#job-state" },
+      { label: "ตรวจสอบสถานะงาน", hash: "#job-status" },
     ],
   },
   {
@@ -85,9 +80,6 @@ const navItems = [
     label: "การใช้งาน /scratch",
     icon: Database,
     description: "I/O เร็ว SSD",
-    subtopics: [
-      { label: "แนะนำ SSD Local Scratch", hash: "#scratch" },
-    ],
   },
   {
     href: "/examples",
@@ -95,10 +87,10 @@ const navItems = [
     icon: FileCode,
     description: "Script Examples",
     subtopics: [
-      { label: "Python CPU สากล", hash: "#python-cpu" },
-      { label: "PyTorch GPU สำเร็จรูป", hash: "#pytorch-gpu" },
-      { label: "สคริปต์แบบสถิติสำหรับ R", hash: "#r-script" },
-      { label: "ตัวอย่างงาน Multi-GPU", hash: "#multi-gpu" },
+      { label: "Script CPU", hash: "#cpu-script" },
+      { label: "Script GPU", hash: "#gpu-script" },
+      { label: "Multi Script", hash: "#multi-script" },
+      { label: "คำสั่งใช้งานอย่างรวดเร็ว", hash: "#fast-commands" },
     ],
   },
   {
@@ -107,9 +99,10 @@ const navItems = [
     icon: Settings,
     description: "จัดการ Jobs",
     subtopics: [
-      { label: "ตรวจสอบคิววิ่งงาน (squeue)", hash: "#squeue" },
-      { label: "ยกเลิกงานที่รันอยู่ (scancel)", hash: "#scancel" },
-      { label: "ตรวจสอบปริมาณโควตางาน", hash: "#quota" },
+      { label: "คำสั่งยกเลิกงาน", hash: "#scancel" },
+      { label: "ดูผลลัพธ์งาน", hash: "#sacct" },
+      { label: "ดูรายละเอียดงาน", hash: "#scontrol" },
+      { label: "ตรวจสอบการใช้งานดิสก์", hash: "#disk-usage" },
     ],
   },
   {
@@ -118,9 +111,9 @@ const navItems = [
     icon: MessageSquare,
     description: "AI Prompt helper",
     subtopics: [
-      { label: "1. โค้ดกระตุ้น AI แรกเริ่ม", hash: "#prime" },
-      { label: "2. เทมเพลตถามตอบที่สำคัญ", hash: "#cats" },
-      { label: "3. ตัวอย่างการแก้ปัญหาจริง", hash: "#cases" },
+      { label: "Prompt ระบบ", hash: "#system-context" },
+      { label: "Prompt คำสั่งต่างๆ", hash: "#command-prompts" },
+      { label: "Prompt กรณีศึกษา", hash: "#cases" },
     ],
   },
 ];
@@ -133,8 +126,8 @@ export function Sidebar() {
       {/* Desktop Sidebar - Fixed */}
       <aside className="hidden lg:flex flex-col fixed left-0 top-16 bottom-0 w-72 bg-white border-r border-slate-200 z-40 overflow-y-auto select-none">
         
-        {/* KKU Required links inside Sidebar vertical */}
-        <div className="p-4 border-b border-slate-100 bg-gradient-to-b from-orange-50/50 to-white space-y-4">
+        {/* KKU Required links inside Sidebar vertical with softer Yellow/Orange style */}
+        <div className="p-4 border-b border-slate-100 bg-gradient-to-b from-yellow-50/50 to-white space-y-4">
           <div>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
               ลิงก์ขอบริการ (Request HPC)
@@ -146,12 +139,12 @@ export function Sidebar() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 bg-[#C2612B] hover:bg-orange-700 text-white rounded-xl px-3 py-2 transition-all duration-150 group shadow-sm"
               >
-                <FileText size={14} className="flex-shrink-0 text-orange-200" />
+                <FileText size={14} className="flex-shrink-0 text-yellow-300" />
                 <div className="flex-1 min-w-0">
                   <div className="font-bold text-xs leading-none text-white">
                     ขอใช้บริการ HPC Server
                   </div>
-                  <div className="text-orange-200 text-[10px] truncate leading-none mt-1">
+                  <div className="text-yellow-150 text-[10px] truncate leading-none mt-1">
                     kku.world/4rql5x
                   </div>
                 </div>
@@ -164,12 +157,12 @@ export function Sidebar() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 bg-[#C2612B] hover:bg-orange-700 text-white rounded-xl px-3 py-2 transition-all duration-150 group shadow-sm"
               >
-                <HardDrive size={14} className="flex-shrink-0 text-orange-200" />
+                <HardDrive size={14} className="flex-shrink-0 text-yellow-300" />
                 <div className="flex-1 min-w-0">
                   <div className="font-bold text-xs leading-none text-white">
                     ขอเพิ่มพื้นที่ / โปรแกรม
                   </div>
-                  <div className="text-orange-200 text-[10px] truncate leading-none mt-1">
+                  <div className="text-yellow-150 text-[10px] truncate leading-none mt-1">
                     kku.world/sbqzt4
                   </div>
                 </div>
@@ -187,14 +180,14 @@ export function Sidebar() {
                 href="https://odt-hpc.kku.ac.th"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-orange-50 hover:bg-orange-100 text-[#C2612B] border border-orange-200/80 rounded-xl px-3 py-1.5 transition-all duration-150 group"
+                className="flex items-center gap-2 bg-yellow-50/50 hover:bg-yellow-50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 transition-all duration-150 group"
               >
-                <ExternalLink size={13} className="text-[#C2612B] flex-shrink-0" />
+                <ExternalLink size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
                 <div className="flex-1 min-w-0">
                   <div className="font-bold text-xs leading-none text-slate-800">
                     Open OnDemand (OOD)
                   </div>
-                  <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono">
+                  <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">
                     https://odt-hpc.kku.ac.th
                   </div>
                 </div>
@@ -204,28 +197,28 @@ export function Sidebar() {
                 href="https://odt-hpc.kku.ac.th/jupyter"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-orange-50 hover:bg-orange-100 text-[#C2612B] border border-orange-200/80 rounded-xl px-3 py-1.5 transition-all duration-150 group"
+                className="flex items-center gap-2 bg-yellow-50/50 hover:bg-yellow-50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 transition-all duration-150 group"
               >
-                <BookOpen size={13} className="text-[#C2612B] flex-shrink-0" />
+                <BookOpen size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
                 <div className="flex-1 min-w-0">
                   <div className="font-bold text-xs leading-none text-slate-800">
                     OOD JupyterHub
                   </div>
-                  <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono">
+                  <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">
                     odt-hpc.kku.ac.th/jupyter
                   </div>
                 </div>
               </a>
 
               <div
-                className="flex items-center gap-2 bg-orange-50 text-slate-800 border border-orange-200/80 rounded-xl px-3 py-1.5 duration-150"
+                className="flex items-center gap-2 bg-yellow-50/50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 duration-150"
               >
-                <Terminal size={13} className="text-[#C2612B] flex-shrink-0" />
+                <Terminal size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
                 <div className="flex-1 min-w-0">
                   <div className="font-bold text-xs leading-none text-slate-800">
                     SSH: Connect Server
                   </div>
-                  <div className="text-[#C2612B] font-mono text-[9.5px] truncate leading-none mt-1 select-all">
+                  <div className="text-[#C2612B] font-mono text-[9.5px] truncate leading-none mt-1 select-all font-bold">
                     odt-hpc-cn.kku.ac.th
                   </div>
                 </div>
@@ -250,7 +243,7 @@ export function Sidebar() {
                     className={cn(
                       "flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs sm:text-sm transition-all duration-150 group",
                       isActive
-                        ? "bg-orange-50 text-orange-950 font-bold"
+                        ? "bg-yellow-50 text-slate-900 font-bold border-l-2 border-[#F5A623]"
                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                     )}
                   >
@@ -259,23 +252,23 @@ export function Sidebar() {
                       className={cn(
                         "flex-shrink-0",
                         isActive
-                          ? "text-[#C2612B]"
+                          ? "text-[#F5A623]"
                           : "text-slate-400 group-hover:text-slate-600"
                       )}
                     />
                     <span className="flex-1 truncate">{item.label}</span>
                     {isActive && (
-                      <ChevronRight size={13} className="text-[#C2612B] flex-shrink-0" />
+                      <ChevronRight size={13} className="text-[#F5A623] flex-shrink-0" />
                     )}
                   </Link>
                   {/* Dynamic subtopics showing for active items */}
                   {isActive && item.subtopics && item.subtopics.length > 0 && (
-                    <ul className="pl-8 pr-2 py-1 space-y-1.5 border-l border-orange-100 ml-5 animate-fade-in-up">
+                    <ul className="pl-8 pr-2 py-1 space-y-1.5 border-l border-yellow-250 ml-5 animate-fade-in-up">
                       {item.subtopics.map((sub, sidx) => (
                         <li key={sidx}>
                           <Link
                             href={`${item.href === "/" ? "" : item.href}${sub.hash}`}
-                            className="block text-[11.5px] text-slate-500 hover:text-orange-700 hover:underline transition-colors py-0.5 truncate"
+                            className="block text-[11.5px] text-slate-500 hover:text-yellow-700 hover:font-semibold hover:underline transition-colors py-0.5 truncate"
                           >
                             • {sub.label}
                           </Link>

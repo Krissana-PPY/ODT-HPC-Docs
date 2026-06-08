@@ -12,17 +12,17 @@
     --popover-foreground: 220 30% 10%;
     --primary: 22 74% 46%; /* #C2612B Brick Orange */
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 14.3% 95.9%;
+    --secondary: 45 93% 95%; /* Soft yellow */
     --secondary-foreground: 220 30% 10%;
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
-    --accent: 22 74% 46%;
+    --accent: 45 93% 47%; /* #F5A623 Vibrant Yellow */
     --accent-foreground: 220 30% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 13% 88%;
     --input: 220 13% 88%;
-    --ring: 22 74% 46%;
+    --ring: 45 93% 47%;
     --radius: 0.5rem;
   }
 }
@@ -63,14 +63,14 @@ html {
   scroll-behavior: smooth;
 }
 
-/* KKU gradient background for hero */
+/* KKU gradient background for hero with Yellow touch and Brick orange scale down */
 .kku-gradient {
-  background: linear-gradient(135deg, #C2612B 0%, #A84F20 40%, #7C3112 100%);
+  background: linear-gradient(135deg, #E07B45 0%, #C2612B 50%, #F5A623 100%);
 }
 
 /* Sidebar active item */
 .sidebar-active {
-  @apply bg-orange-50 text-orange-950 border-l-4 border-[#C2612B] font-semibold;
+  @apply bg-yellow-50/70 text-slate-900 border-l-4 border-[#F5A623] font-bold;
 }
 
 /* Table styles */
@@ -78,7 +78,7 @@ html {
   @apply w-full border-collapse text-sm;
 }
 .docs-table th {
-  @apply bg-[#C2612B] text-white px-4 py-3 text-left font-semibold;
+  @apply bg-gradient-to-r from-[#C2612B] to-[#F5A623] text-white px-4 py-3 text-left font-semibold;
 }
 .docs-table td {
   @apply px-4 py-3 border-b border-orange-100;

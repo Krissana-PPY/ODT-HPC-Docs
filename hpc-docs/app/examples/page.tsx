@@ -12,7 +12,7 @@ export default function ExamplesPage() {
         <p className="text-slate-500 ml-12">ตัวอย่างสคริปต์พร้อมใช้งาน สำหรับงานประเภทต่างๆ</p>
       </div>
 
-      <section className="space-y-4">
+      <section id="cpu-script" className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <Cpu size={18} className="text-[#003087]" />
           <span className="text-[#003087]">7.1</span> Python ทั่วไป (CPU)
@@ -39,23 +39,23 @@ python3 analysis.py
 echo "=== Done ==="`} />
       </section>
 
-      <section className="space-y-4">
+      <section id="gpu-script" className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <Brain size={18} className="text-[#6B21A8]" />
-          <span className="text-[#003087]">7.2</span> PyTorch / Deep Learning (GPU)
+          <span className="text-[#003087]">7.2</span> python / Deep Learning (GPU)
         </h2>
-        <CodeBlock title="pytorch_gpu.sh" language="bash" code={`#!/bin/bash
+        <CodeBlock title="python_gpu.sh" language="bash" code={`#!/bin/bash
 
-#SBATCH --job-name=pytorch-train
-#SBATCH --output=/home/%u/pytorch-%j.out
-#SBATCH --error=/home/%u/pytorch-%j.err
+#SBATCH --job-name=python-train
+#SBATCH --output=/home/%u/python-%j.out
+#SBATCH --error=/home/%u/python-%j.err
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=24:00:00
 
-echo "=== PyTorch GPU Job ==="
+echo "=== python GPU Job ==="
 nvidia-smi
 echo "CUDA_VISIBLE_DEVICES: $CUDA_VISIBLE_DEVICES"
 
@@ -69,7 +69,7 @@ echo "Training complete!"`} />
 
       </section>
 
-      <section className="space-y-4">
+      <section id="multi-script" className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <BarChart2 size={18} className="text-[#C2612B]" />
           <span className="text-[#003087]">7.3</span> Script Python หลายไฟล์ในงานเดียว
@@ -95,7 +95,7 @@ echo 'เสร็จสิ้นทุกขั้นตอน!'
 `} />
       </section>
 
-      <section className="space-y-4">
+      <section id="fast-commands" className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <Cpu size={18} className="text-green-700" />
           <span className="text-[#003087]">7.4</span> รันคำสั่งเดียว

@@ -24,7 +24,7 @@ export default function SlurmCommandsPage() {
       </div>
 
       <section>
-        <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+        <h2 id="general" className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
           <span className="text-[#003087]">4.1</span> คำสั่งที่จำเป็น
         </h2>
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
@@ -49,7 +49,7 @@ export default function SlurmCommandsPage() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section id="job-state" className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <span className="text-[#003087]">4.2</span> ตรวจสอบสถานะ Cluster
         </h2>
@@ -74,7 +74,7 @@ export default function SlurmCommandsPage() {
         </div>
       </section>
 
-      <section className="space-y-4">
+      <section id="job-status" className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <span className="text-[#003087]">4.3</span> ตรวจสอบงานของคุณ
         </h2>

@@ -11,7 +11,7 @@ export default function JobManagementPage() {
         </div>
         <p className="text-slate-500 ml-12">ติดตาม ตรวจสอบ และจัดการงานที่ส่งไปแล้ว</p>
       </div>
-      <section className="space-y-4">
+      <section id="scancel" className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <X size={18} className="text-red-500" />
           <span className="text-[#003087]">8.1</span> ยกเลิกงาน
@@ -23,7 +23,7 @@ scancel 12345
 scancel -u $USER`} />
       </section>
 
-      <section className="space-y-4">
+      <section id="sacct" className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <RefreshCw size={18} className="text-[#F5A623]" />
           <span className="text-[#003087]">8.2</span> ดูผลลัพธ์งาน (ขณะกำลังรัน)
@@ -31,7 +31,7 @@ scancel -u $USER`} />
         <CodeBlock language="bash" code={`# ดูรายละเอียด Job ที่กำลังรัน
 tail -f /home/$USER/job-12345.out`} />
       </section>
-      <section className="space-y-4">
+      <section id="scontrol" className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <CheckCircle size={18} className="text-[#F5A623]" />
           <span className="text-[#003087]">8.3</span> ดูรายละเอียดงานที่เสร็จแล้ว
@@ -47,7 +47,7 @@ tail -f /home/$USER/job-12345.out`} />
 `} />
       </section>
 
-      <section className="space-y-4">
+      <section id="disk-usage" className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <Database size={18} className="text-[#F5A623]" />
           <span className="text-[#003087]">8.4</span> ตรวจสอบการใช้งานดิสก์

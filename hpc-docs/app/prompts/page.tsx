@@ -157,10 +157,10 @@ sacct บอกว่างานของฉันใช้ RAM จริงแ
       </div>
 
       {/* STEP 1: Priming Prompt */}
-      <section className="space-y-4">
+      <section id="system-context" className="space-y-4">
         <div className="flex items-center gap-2">
           <span className="bg-orange-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">1</span>
-          <h2 className="text-xl font-bold text-slate-800">ขั้นตอนที่ 1 : สอน AI ให้เข้าใจระบบ (System Prime Prompt)</h2>
+          <h2 className="text-xl font-bold text-slate-800">ขั้นตอนที่ 1 : สอน AI ให้เข้าใจระบบ</h2>
         </div>
         <div className="bg-orange-50/40 p-5 rounded-2xl border border-orange-100 space-y-4">
           <h3 className="font-semibold text-orange-950 text-sm">
@@ -194,13 +194,13 @@ sacct บอกว่างานของฉันใช้ RAM จริงแ
       </section>
 
       {/* STEP 2: General Prompt Templates */}
-      <section className="space-y-4">
+      <section id="command-prompts" className="space-y-4">
         <div className="flex items-center gap-2">
           <span className="bg-orange-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">2</span>
-          <h2 className="text-xl font-bold text-slate-800">ขั้นตอนที่ 2 : เลือกสไตล์คำสั่ง AI จากหมวดหมู่งานของคุณ (Category Templates)</h2>
+          <h2 className="text-xl font-bold text-slate-800">ขั้นตอนที่ 2 : เลือกสไตล์คำสั่ง AI จากหมวดหมู่งานของคุณ</h2>
         </div>
         <p className="text-slate-600 text-sm">
-          เมื่อ prime ระบบแล้ว คุณสามารถเลือก Copy และปรับแต่ง Prompt ด้านล่างนี้ เพื่อทำคำต้องการเฉพาะทางของคุณได้ทันที:
+          เมื่อเข้าใจระบบแล้วของ HPC แล้วคุณสามารถเลือก Copy และปรับแต่ง Prompt ด้านล่างนี้ เพื่อทำคำต้องการเฉพาะทางของคุณได้ทันที:
         </p>
 
         <div className="grid grid-cols-1 gap-6">
@@ -247,10 +247,10 @@ sacct บอกว่างานของฉันใช้ RAM จริงแ
       </section>
 
       {/* STEP 3: Task Specific Real Examples */}
-      <section className="space-y-4">
+      <section id="cases" className="space-y-4">
         <div className="flex items-center gap-2">
           <span className="bg-orange-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">3</span>
-          <h2 className="text-xl font-bold text-slate-800">ตัวอย่างคำถามเคสจริง (Real-World Use Cases)</h2>
+          <h2 className="text-xl font-bold text-slate-800">ตัวอย่างคำถาม</h2>
         </div>
         <p className="text-slate-600 text-sm">
           ตัวอย่างคำถามที่พบบ่อยในการทำงานจริงร่วมกับระบบ Slurm Scheduler ของผู้ขอทำงาน HPC:
