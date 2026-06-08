@@ -27,7 +27,6 @@ const navItems = [
     icon: Zap,
     description: "Quick Start Guide",
     subtopics: [
-      { label: "VPN: เชื่อมต่อมหาวิทยาลัย", hash: "#vpn" },
       { label: "OOD: เข้าผ่านหน้าเว็บ", hash: "#ood" },
       { label: "JupyterHub: เข้าทำงานด่วน", hash: "#jupyter" },
       { label: "SSH: ผ่านคีย์เวิร์ดหน้าจอหลัก", hash: "#ssh" },
@@ -111,16 +110,6 @@ const navItems = [
       { label: "ตรวจสอบคิววิ่งงาน (squeue)", hash: "#squeue" },
       { label: "ยกเลิกงานที่รันอยู่ (scancel)", hash: "#scancel" },
       { label: "ตรวจสอบปริมาณโควตางาน", hash: "#quota" },
-    ],
-  },
-  {
-    href: "/troubleshooting",
-    label: "การแก้ปัญหา & ติดต่อ",
-    icon: HelpCircle,
-    description: "Best Practices",
-    subtopics: [
-      { label: "คำถามที่ถูกถามบ่อย (FAQ)", hash: "#faq" },
-      { label: "แบบฟอร์มขอความช่วยเหลือ", hash: "#contact" },
     ],
   },
   {

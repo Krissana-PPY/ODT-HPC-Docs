@@ -41,25 +41,25 @@ export default function ScratchPage() {
 #SBATCH --job-name=scratch-job
 #SBATCH --output=/home/%u/scratch-%j.out
 #SBATCH --partition=cpu
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=32G
-#SBATCH --time=04:00:00
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=8G
+#SBATCH --time=02:00:00
 
 # สร้างโฟลเดอร์ส่วนตัวใน /scratch
 SCRATCH_DIR=/scratch/$USER/$SLURM_JOB_ID
 mkdir -p $SCRATCH_DIR
 
 # คัดลอกข้อมูลไปยัง /scratch
-cp -r /home/$USER/my_data/ $SCRATCH_DIR/
+cp -r /home/$USER/large_dataset.csv $SCRATCH_DIR/
 
 # เปลี่ยนไปยัง /scratch เพื่อทำงาน
 cd $SCRATCH_DIR
 
 # รันโปรแกรม (I/O จะเร็วมาก!)
-python3 heavy_computation.py --data $SCRATCH_DIR/my_data/
+python3 /home/$USER/script.py large_dataset.csv output.csv
 
 # คัดลอกผลลัพธ์กลับ /home ก่อนงานจบ
-cp -r $SCRATCH_DIR/results/ /home/$USER/
+cp -r $SCRATCH_DIR/output.csv /home/$USER/results/
 
 # ลบ /scratch หลังเสร็จ (ทำความสะอาด)
 rm -rf $SCRATCH_DIR`} />
@@ -71,12 +71,6 @@ rm -rf $SCRATCH_DIR`} />
             <p className="text-orange-700 text-sm mt-1">ต้องคัดลอกผลลัพธ์กลับ <code className="bg-orange-100 px-1 rounded">/home</code> ก่อนสคริปต์จบ มิฉะนั้นข้อมูลจะหายถาวร</p>
           </div>
         </div>
-
-        <CodeBlock language="bash" code={`# ตรวจสอบพื้นที่ /scratch ที่ใช้อยู่
-du -sh /scratch/$USER/
-
-# ตรวจสอบพื้นที่ว่างทั้งหมด
-df -h /scratch`} />
       </section>
     </div>
   );

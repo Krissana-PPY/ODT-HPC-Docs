@@ -87,27 +87,6 @@ export default function HomePage() {
           </a>
         </div>
       </div>
-
-      {/* Introduction */}
-      <section id="intro" className="scroll-mt-20">
-        <h2 className="text-xl font-bold text-slate-800 mb-3 flex items-center gap-2">
-          <span className="text-[#C2612B]">#</span> 1. บทนำและภาพรวมระบบ
-        </h2>
-        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-          <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
-            ยินดีต้อนรับสู่ระบบ{" "}
-            <span className="font-bold text-[#C2612B]">
-              ODT-HPC KKU (High-Performance Computing Cluster)
-            </span>{" "}
-            ระบบคำนวณขั้นสูงนี้จัดทำขึ้นโดยทีมงานสำนักเทคโนโลยีสารสนเทศเพื่อรองรับงานวิจัยที่ต้องใช้การจัดสรรทรัพยากร CPU, RAM, และประมวลผล GPU สปีดสูง แทนที่จะใช้คอมพิวเตอร์ส่วนตัวส่งรันงานนานหลายวัน คุณสามารถส่ง{" "}
-            <code className="bg-stone-100 text-orange-800 px-1.5 py-0.5 rounded font-mono text-xs">
-              job script
-            </code>{" "}
-            ของคุณเข้าคิวใน Cluster ระบบจะจัดคิวรันให้อัตโนมัติอย่างมีประสิทธิภาพสูงสุด
-          </p>
-        </div>
-      </section>
-
       {/* Access Portals Highlights */}
       <section className="space-y-4">
         <h3 className="text-base font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
@@ -155,6 +134,26 @@ export default function HomePage() {
               </code>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Introduction */}
+      <section id="intro" className="scroll-mt-20">
+        <h2 className="text-xl font-bold text-slate-800 mb-3 flex items-center gap-2">
+          <span className="text-[#C2612B]">#</span> 1. บทนำและภาพรวมระบบ
+        </h2>
+        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+          <p className="text-slate-700 leading-relaxed text-sm sm:text-base">
+            ยินดีต้อนรับสู่ระบบ{" "}
+            <span className="font-bold text-[#C2612B]">
+              ODT-HPC KKU (High-Performance Computing Cluster)
+            </span>{" "}
+            ระบบคำนวณขั้นสูงนี้จัดทำขึ้นโดยทีมงานสำนักเทคโนโลยีสารสนเทศเพื่อรองรับงานวิจัยที่ต้องใช้การจัดสรรทรัพยากร CPU, RAM, และประมวลผล GPU สปีดสูง แทนที่จะใช้คอมพิวเตอร์ส่วนตัวส่งรันงานนานหลายวัน คุณสามารถส่ง{" "}
+            <code className="bg-stone-100 text-orange-800 px-1.5 py-0.5 rounded font-mono text-xs">
+              job script
+            </code>{" "}
+            ของคุณเข้าคิวใน Cluster ระบบจะจัดคิวรันให้อัตโนมัติอย่างมีประสิทธิภาพสูงสุด
+          </p>
         </div>
       </section>
 

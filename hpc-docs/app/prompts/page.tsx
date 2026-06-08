@@ -164,7 +164,7 @@ sacct บอกว่างานของฉันใช้ RAM จริงแ
         </div>
         <div className="bg-orange-50/40 p-5 rounded-2xl border border-orange-100 space-y-4">
           <h3 className="font-semibold text-orange-950 text-sm">
-            💡 แนะนำให้ผู้ใช้งาน คัดลอก Prompt ด้านล่างนี้ไปวางใน AI เป็นแช็ตแรก เพื่อแช็ตบอทจะได้รับบทบาทเป็นผู้เชี่ยวชาญ และจดจำสเปคทั้งหมดของ ODT-HPC KKU ได้อย่างแม่นยำ
+            💡 แนะนำให้ผู้ใช้งาน คัดลอก Prompt ด้านล่างนี้ไปวางใน AI เป็นข้อความแรก เพื่อแช็ตบอทจะได้รับบทบาทเป็นผู้เชี่ยวชาญ และจดจำสเปคทั้งหมดของ ODT-HPC KKU ได้อย่างแม่นยำ
           </h3>
           <div className="relative bg-white rounded-xl border border-orange-200 overflow-hidden shadow-sm">
             <div className="flex items-center justify-between px-4 py-2.5 bg-orange-100/50 border-b border-orange-200">

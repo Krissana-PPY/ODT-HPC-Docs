@@ -33,11 +33,8 @@ echo "=== Python CPU Job ==="
 echo "Node: $(hostname)"
 echo "Date: $(date)"
 
-# โหลด Environment (ถ้าใช้ virtualenv)
-# source /home/$USER/venv/bin/activate
-
 # รันโปรแกรม
-python3 analysis.py --threads 8
+python3 analysis.py
 
 echo "=== Done ==="`} />
       </section>
@@ -70,54 +67,43 @@ python3 train.py \\
 
 echo "Training complete!"`} />
 
-        <CodeBlock title="train.py (ตัวอย่าง)" language="python" code={`import torch
-import torch.nn as nn
-
-# ตรวจสอบ GPU
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"Using device: {device}")
-
-if torch.cuda.is_available():
-    print(f"GPU: {torch.cuda.get_device_name(0)}")
-    print(f"Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
-
-# โมเดลของคุณที่นี่...`} />
       </section>
 
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <BarChart2 size={18} className="text-[#C2612B]" />
-          <span className="text-[#003087]">7.3</span> R Script
+          <span className="text-[#003087]">7.3</span> Script Python หลายไฟล์ในงานเดียว
         </h2>
-        <CodeBlock title="r_job.sh" language="bash" code={`#!/bin/bash
-
-#SBATCH --job-name=r-analysis
-#SBATCH --output=/home/%u/r-%j.out
+        <CodeBlock title="python_job.sh" language="bash" code={`#!/bin/bash
+#SBATCH --job-name=multi-step
+#SBATCH --output=/home/%u/multi-%j.out
 #SBATCH --partition=cpu
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=8G
-#SBATCH --time=02:00:00
+#SBATCH --mem=16G
+#SBATCH --time=04:00:00
 
-Rscript --vanilla analysis.R`} />
+echo 'ขั้นตอนที่ 1: Preprocessing...'
+python3 /home/$USER/scripts/preprocess.py
+
+echo 'ขั้นตอนที่ 2: วิเคราะห์...'
+python3 /home/$USER/scripts/analyze.py
+
+echo 'ขั้นตอนที่ 3: สร้างรายงาน...'
+python3 /home/$USER/scripts/report.py
+
+echo 'เสร็จสิ้นทุกขั้นตอน!'
+`} />
       </section>
 
       <section className="space-y-4">
         <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <Cpu size={18} className="text-green-700" />
-          <span className="text-[#003087]">7.4</span> Multi-GPU Training
+          <span className="text-[#003087]">7.4</span> รันคำสั่งเดียว
         </h2>
-        <CodeBlock title="multi_gpu.sh" language="bash" code={`#!/bin/bash
-
-#SBATCH --job-name=multi-gpu
-#SBATCH --output=/home/%u/multigpu-%j.out
-#SBATCH --partition=gpu
-#SBATCH --gres=gpu:2           # ขอ 2 GPU
-#SBATCH --cpus-per-task=16
-#SBATCH --mem=64G
-#SBATCH --time=48:00:00
-
-# ใช้ torch.nn.DataParallel หรือ torchrun
-torchrun --nproc_per_node=2 train_distributed.py`} />
+        <CodeBlock title="multi_gpu.sh" language="bash" code={`srun --partition=short python3 my_script.py
+srun --partition=gpu --gres=gpu:1 python3 train.py
+srun --partition=cpu --cpus-per-task=8 --mem=16G ./my_program
+`} />
       </section>
     </div>
   );

@@ -44,39 +44,6 @@ export default function QuickStartPage() {
           <Image src="/images/image-2.png" alt="Open OnDemand Dashboard" width={900} height={500} className="w-full h-auto rounded-lg" unoptimized />
         </div>
 
-        {/* Node status info */}
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-          <h3 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
-            <Info size={16} className="text-[#003087]" />
-            สถานะ Partition และ Node
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {[
-              { label: "cpu", desc: "สำหรับงาน CPU ทั่วไป", color: "blue" },
-              { label: "gpu", desc: "สำหรับงาน GPU (AI/ML)", color: "purple" },
-              { label: "short", desc: "สำหรับงานเล็กน้อย / ทดสอบ", color: "orange" },
-            ].map((p) => (
-              <div key={p.label} className="flex items-center gap-2">
-                <code className={`bg-${p.color}-100 text-${p.color}-800 px-2 py-0.5 rounded font-mono text-sm font-semibold w-16 text-center`}>{p.label}</code>
-                <span className="text-slate-600 text-sm">{p.desc}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {[
-              { status: "idle", label: "ว่าง", color: "bg-green-100 text-green-700" },
-              { status: "mix", label: "ใช้งานบางส่วน", color: "bg-yellow-100 text-yellow-700" },
-              { status: "alloc", label: "ใช้งานเต็ม", color: "bg-red-100 text-red-700" },
-              { status: "down", label: "ไม่พร้อมใช้งาน", color: "bg-slate-100 text-slate-600" },
-            ].map((s) => (
-              <div key={s.status} className={`${s.color} rounded-lg px-3 py-2 text-center`}>
-                <div className="font-mono font-semibold text-sm">{s.status}</div>
-                <div className="text-xs mt-0.5">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Job steps */}
         <div className="space-y-3">
           <h3 className="font-semibold text-slate-800 flex items-center gap-2">
@@ -133,7 +100,7 @@ python3 my_script.py`}
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-          <p className="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wide">หลังกด Submit</p>
+          <p className="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wide">เลือก Save และ Submit</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Image src="/images/image-8.png" alt="ผลลัพธ์การ Submit งาน" width={450} height={300} className="w-full h-auto rounded-lg border border-slate-100" unoptimized />
             <Image src="/images/image-9.png" alt="ไฟล์ผลลัพธ์" width={450} height={300} className="w-full h-auto rounded-lg border border-slate-100" unoptimized />
@@ -141,8 +108,14 @@ python3 my_script.py`}
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+          <p className="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wide">ไฟล์ผลลัพธ์ที่ได้ทั้งหมด สามารถตรวจสอบได้ที่ directory ของงานได้</p>
+          <Image src="/images/image-10.png" alt="Folder Jobs" width={900} height={400} className="w-full h-auto rounded-lg" unoptimized />
+        </div>
+
+        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
           <p className="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wide">ตรวจสอบงาน: Jobs &gt; Active Jobs</p>
-          <Image src="/images/image-10.png" alt="Active Jobs" width={900} height={400} className="w-full h-auto rounded-lg" unoptimized />
+          <Image src="/images/image-11.png" alt="Active Jobs1" width={900} height={400} className="w-full h-auto rounded-lg" unoptimized />
+          <Image src="/images/image-12.png" alt="Active Jobs2" width={900} height={400} className="w-full h-auto rounded-lg" unoptimized />
         </div>
       </section>
 
@@ -195,14 +168,15 @@ ssh user1@odt-hpc-cn.kku.ac.th
               <Monitor size={14} className="text-slate-500" />
               <span className="text-sm font-medium text-slate-700">PuTTY</span>
             </div>
-            <Image src="/images/image-11.png" alt="PuTTY SSH" width={450} height={350} className="w-full h-auto" unoptimized />
+            <Image src="/images/image-14.png" alt="PuTTY SSH" width={450} height={350} className="w-full h-auto" unoptimized />
           </div>
           <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
             <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
               <Monitor size={14} className="text-slate-500" />
               <span className="text-sm font-medium text-slate-700">MobaXterm</span>
             </div>
-            <Image src="/images/image-12.png" alt="MobaXterm SSH" width={450} height={350} className="w-full h-auto" unoptimized />
+            <Image src="/images/image-15.png" alt="MobaXterm SSH" width={450} height={350} className="w-full h-auto" unoptimized />
+            <Image src="/images/image-16.png" alt="MobaXterm SSH" width={450} height={350} className="w-full h-auto" unoptimized />
           </div>
         </div>
 
@@ -211,39 +185,47 @@ ssh user1@odt-hpc-cn.kku.ac.th
             <Monitor size={14} className="text-slate-500" />
             <span className="text-sm font-medium text-slate-700">Jupyter Terminal</span>
           </div>
-          <Image src="/images/image-13.png" alt="Jupyter Terminal" width={900} height={400} className="w-full h-auto" unoptimized />
+          <Image src="/images/image-17.png" alt="Jupyter Terminal" width={900} height={400} className="w-full h-auto" unoptimized />
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-          <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
-            <span className="text-sm font-medium text-slate-700">SSH ผ่าน Browser (Jupyter)</span>
+          <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+            <Monitor size={14} className="text-slate-500" />
+            <span className="text-sm font-medium text-slate-700">ตัวอย่างการใช้งานผ่าน Terminal</span>
           </div>
-          <Image src="/images/image-14.png" alt="Jupyter SSH" width={900} height={400} className="w-full h-auto" unoptimized />
+          <Image src="/images/image-17.png" alt="Jupyter Terminal" width={900} height={400} className="w-full h-auto" unoptimized />
         </div>
 
-        <CodeBlock
+        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+          <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+            <span className="text-sm font-medium text-slate-700">1 เข้าไปยัง Directory งานของคุณพร้อมสร้างไฟล์ Script ทดสอบโดยใช้ partition cpu</span>
+          </div>
+          <CodeBlock
           title="ส่งงานผ่าน SSH (partition cpu)"
           language="bash"
           code={`#!/bin/bash
-
-#SBATCH --job-name=my-job
-#SBATCH --output=/home/%u/job-%j.out
-#SBATCH --error=/home/%u/job-%j.err
-#SBATCH --partition=cpu
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=8G
-#SBATCH --time=02:00:00
+#SBATCH --job-name=my-job            # ชื่องาน
+#SBATCH --output=/home/%u/job-%j.out # ไฟล์ผลลัพธ์ (%u=username, %j=jobid)
+#SBATCH --error=/home/%u/job-%j.err  # ไฟล์ error
+#SBATCH --partition=cpu              # พาร์ติชัน (cpu/gpu/short)
+#SBATCH --nodes=1                    # จำนวน node
+#SBATCH --ntasks=1                   # จำนวน task
+#SBATCH --cpus-per-task=4            # CPU ต่อ task
+#SBATCH --mem=8G                     # หน่วยความจำ
+#SBATCH --time=02:00:00              # เวลาสูงสุด (HH:MM:SS)
 
 # คำสั่งของคุณด้านล่าง
 echo "Job started at $(date)"
 python3 my_script.py
 echo "Job finished at $(date)"`}
-        />
-
-        <div className="bg-white rounded-xl border border-slate-200 p-4">
-          <Image src="/images/image-15.png" alt="ผลลัพธ์การส่งงาน SSH" width={900} height={400} className="w-full h-auto rounded-lg" unoptimized />
+                  />
+          <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+            <span className="text-sm font-medium text-slate-700">2	ส่งงานด้วยคำสั่ง sbatch job_test.sh</span>
+          </div>
+          <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center gap-2">
+            <span className="text-sm font-medium text-slate-700">3	ตรวจสอบดูสถานะ squeue -u Username</span>
+          </div>
+          <Image src="/images/image-18.png" alt="Jupyter Terminal" width={900} height={400} className="w-full h-auto" unoptimized />
         </div>
 
         <div className="space-y-2">

@@ -42,39 +42,6 @@ export function Navbar() {
             </div>
           </Link>
         </div>
-
-        {/* Right: Action Links */}
-        <div className="flex items-center gap-2">
-          <a
-            href="https://kku.world/4rql5x"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden sm:flex items-center gap-1.5 bg-orange-800 hover:bg-orange-900 text-white text-xs font-bold px-3 py-2 rounded-lg transition-all duration-200 border border-orange-700/50"
-          >
-            <FileText size={13} />
-            <span>ขอใช้บริการ HPC</span>
-            <ExternalLink size={10} />
-          </a>
-          <a
-            href="https://kku.world/sbqzt4"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden md:flex items-center gap-1.5 bg-orange-800 hover:bg-orange-900 text-white text-xs font-bold px-3 py-2 rounded-lg transition-all duration-200 border border-orange-700/50"
-          >
-            <HardDrive size={13} />
-            <span>ขอโปรแกรม/พื้นที่</span>
-            <ExternalLink size={10} />
-          </a>
-          <a
-            href="https://odt-hpc.kku.ac.th"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.25 bg-white/10 hover:bg-white/20 text-white text-xs font-medium px-3 py-2 rounded-lg transition-all duration-200 border border-white/20"
-          >
-            <ExternalLink size={13} />
-            <span>Open OnDemand</span>
-          </a>
-        </div>
       </div>
 
       {/* Mobile Menu */}
