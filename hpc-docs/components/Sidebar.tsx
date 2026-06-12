@@ -144,8 +144,6 @@ export function Sidebar() {
                   <div className="font-bold text-xs leading-none text-white">
                     ขอใช้บริการ HPC Server
                   </div>
-                  <div className="text-yellow-150 text-[10px] truncate leading-none mt-1">
-                  </div>
                 </div>
                 <ExternalLink size={10} className="flex-shrink-0 opacity-60 group-hover:opacity-100 text-white" />
               </a>
@@ -160,8 +158,6 @@ export function Sidebar() {
                 <div className="flex-1 min-w-0">
                   <div className="font-bold text-xs leading-none text-white">
                     ขอเพิ่มพื้นที่ / โปรแกรม
-                  </div>
-                  <div className="text-yellow-150 text-[10px] truncate leading-none mt-1">
                   </div>
                 </div>
                 <ExternalLink size={10} className="flex-shrink-0 opacity-60 group-hover:opacity-100 text-white" />

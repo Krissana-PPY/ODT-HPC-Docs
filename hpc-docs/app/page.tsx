@@ -56,8 +56,6 @@ export default function HomePage() {
             <FileText size={20} className="text-orange-200 flex-shrink-0" />
             <div className="flex-1">
               <div className="text-sm font-bold">ขอใช้บริการ HPC Server</div>
-              <div className="text-xs font-normal text-orange-200 font-mono mt-0.5">
-              </div>
             </div>
             <ExternalLink
               size={15}
@@ -74,8 +72,6 @@ export default function HomePage() {
             <div className="flex-1">
               <div className="text-sm font-bold">
                 ขอโปรแกรมเพิ่มเติม / เพิ่มพื้นที่โควตา
-              </div>
-              <div className="text-xs font-normal text-orange-200 font-mono mt-0.5">
               </div>
             </div>
             <ExternalLink
