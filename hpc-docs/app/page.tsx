@@ -57,7 +57,6 @@ export default function HomePage() {
             <div className="flex-1">
               <div className="text-sm font-bold">ขอใช้บริการ HPC Server</div>
               <div className="text-xs font-normal text-orange-200 font-mono mt-0.5">
-                kku.world/4rql5x
               </div>
             </div>
             <ExternalLink
@@ -77,7 +76,6 @@ export default function HomePage() {
                 ขอโปรแกรมเพิ่มเติม / เพิ่มพื้นที่โควตา
               </div>
               <div className="text-xs font-normal text-orange-200 font-mono mt-0.5">
-                kku.world/sbqzt4
               </div>
             </div>
             <ExternalLink
@@ -104,7 +102,7 @@ export default function HomePage() {
             <h4 className="font-bold text-slate-800 text-sm leading-none">Open OnDemand (OOD)</h4>
             <p className="text-slate-500 text-xs mt-1.5 mb-3 leading-relaxed">เข้าใช้งานหน้าเว็บหลักแบบ GUI อัปโหลดและจัดการไฟล์ผ่านระบบ Web Browser</p>
             <div className="text-[10.5px] font-mono text-[#C2612B] font-bold decoration-dotted underline group-hover:no-underline truncate">
-              https://odt-hpc.kku.ac.th
+              odt-hpc.kku.ac.th
             </div>
           </a>
 

@@ -145,7 +145,6 @@ export function Sidebar() {
                     ขอใช้บริการ HPC Server
                   </div>
                   <div className="text-yellow-150 text-[10px] truncate leading-none mt-1">
-                    kku.world/4rql5x
                   </div>
                 </div>
                 <ExternalLink size={10} className="flex-shrink-0 opacity-60 group-hover:opacity-100 text-white" />
@@ -163,7 +162,6 @@ export function Sidebar() {
                     ขอเพิ่มพื้นที่ / โปรแกรม
                   </div>
                   <div className="text-yellow-150 text-[10px] truncate leading-none mt-1">
-                    kku.world/sbqzt4
                   </div>
                 </div>
                 <ExternalLink size={10} className="flex-shrink-0 opacity-60 group-hover:opacity-100 text-white" />
@@ -188,7 +186,7 @@ export function Sidebar() {
                     Open OnDemand (OOD)
                   </div>
                   <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">
-                    https://odt-hpc.kku.ac.th
+                    odt-hpc.kku.ac.th
                   </div>
                 </div>
               </a>
