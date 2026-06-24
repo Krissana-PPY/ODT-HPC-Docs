@@ -73,6 +73,7 @@ const navItems = [
       { label: "ขอเปิดใช้งานการคำนวณ GPU", hash: "#gpu" },
       { label: "งานสเกลหลายโหนด (MPI)", hash: "#multinode" },
       { label: "ประเภทงานวนซ้ำ Array Job", hash: "#array" },
+      { label: "Dorado Basecalling (Nanopore)", hash: "#dorado" },
     ],
   },
   {
@@ -91,6 +92,7 @@ const navItems = [
       { label: "Script GPU", hash: "#gpu-script" },
       { label: "Multi Script", hash: "#multi-script" },
       { label: "คำสั่งใช้งานอย่างรวดเร็ว", hash: "#fast-commands" },
+      { label: "Dorado Basecalling", hash: "#dorado-script" },
     ],
   },
   {
@@ -280,9 +282,9 @@ export function Sidebar() {
         <div className="p-4 border-t border-slate-100">
           <div className="text-xs text-slate-400 text-center">
             <div className="font-semibold text-slate-500">
-              ODT-HPC · KKU v1.0
+              ODT-HPC · KKU v1.1 Testbeta
             </div>
-            <div>พฤษภาคม 2568</div>
+            <div>มิถุนายน 2569</div>
           </div>
         </div>
       </aside>

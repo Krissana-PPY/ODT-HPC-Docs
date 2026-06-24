@@ -1,4 +1,4 @@
-import { Send, Cpu, Zap, GitBranch, List } from "lucide-react";
+import { Send, Cpu, Zap, GitBranch, List, Dna, Download, AlertTriangle } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
 
 export default function JobSubmissionPage() {
@@ -117,6 +117,86 @@ srun ./my_mpi_program`} />
 
 echo "Task $SLURM_ARRAY_TASK_ID"
 python3 process.py --input data_\${SLURM_ARRAY_TASK_ID}.csv`} />
+      </section>
+
+      <section id="dorado" className="space-y-4">
+        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <Dna size={18} className="text-green-700" />
+          <span className="text-[#003087]">5.6</span> Dorado Basecalling (Oxford Nanopore)
+        </h2>
+        <p className="text-slate-600 text-sm">Dorado เป็น basecaller สำหรับข้อมูล Oxford Nanopore sequencing รองรับการประมวลผลด้วย GPU เพื่อความเร็วสูง</p>
+
+        {/* Warning box */}
+        <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <AlertTriangle size={18} className="text-amber-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold text-amber-800 text-sm">ต้องดาวน์โหลดโมเดลก่อนใช้งาน</p>
+            <p className="text-amber-700 text-sm mt-1">
+              Dorado ไม่ได้รวมโมเดลมาในระบบ ผู้ใช้ต้องดาวน์โหลดโมเดลที่ต้องการไปเก็บไว้ในพื้นที่ของตนเองก่อนส่งงาน
+              เนื่องจากระบบไม่ได้สำรองโมเดลไว้กลาง
+            </p>
+          </div>
+        </div>
+
+        {/* Download model */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Download size={15} className="text-green-700" />
+            <h3 className="font-semibold text-slate-700 text-sm">ตัวอย่าง : ดาวน์โหลดโมเดลไปยัง directory ของตนเอง</h3>
+          </div>
+          <CodeBlock language="bash" code={`# ดาวน์โหลดโมเดลไปยัง $HOME/dorado_models
+dorado download --model dna_r10.4.1_e8.2_400bps_hac@v5.0.0 --directory $HOME/dorado_models
+
+# ดูรายการโมเดลที่มีทั้งหมด
+dorado download --list`} />
+        </div>
+
+        {/* Job script */}
+        <CodeBlock title="dorado_job.sh" language="bash" code={`#!/bin/bash
+#SBATCH --job-name=dorado
+#SBATCH --partition=gpu
+#SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=64G
+#SBATCH --time=24:00:00
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
+
+# ── 1. กำหนด path ──────────────────────────────────────────
+# แก้ทั้ง 3 ค่านี้ให้ตรงกับข้อมูลของคุณ
+INPUT="$HOME/data"          # ที่อยู่ของข้อมูล (POD5/FAST5 files)
+OUTPUT="$HOME/results"      # ที่อยู่ของผลลัพธ์
+MODEL="$HOME/dorado_models/dna_r10.4.1_e8.2_400bps_hac@v5.0.0"  # โมเดลที่เลือกใช้
+
+# ── 2. เตรียม scratch (local SSD บน compute node) ─────────
+# copy input ไปไว้ที่ scratch ก่อนเสมอ เพื่อความเร็ว
+SCRATCH="/scratch/\${USER}/\${SLURM_JOB_ID}"
+mkdir -p \${SCRATCH}
+cp -r \${INPUT}/* \${SCRATCH}/
+
+# สร้าง directory output หากยังไม่มี
+mkdir -p \${OUTPUT}
+
+# ── 3. รัน basecalling ─────────────────────────────────────
+dorado basecaller \${MODEL} \${SCRATCH} --device cuda:0 > \${SCRATCH}/calls.bam
+
+# ── 4. เก็บผลลัพธ์กลับ $HOME ──────────────────────────────
+# ต้อง copy กลับก่อน job จบ เพราะ scratch ไม่ได้ backup
+cp \${SCRATCH}/calls.bam \${OUTPUT}/
+
+# ── 5. ล้าง scratch ────────────────────────────────────────
+rm -rf \${SCRATCH}`} />
+
+        <div className="alert-info flex items-start gap-3">
+          <Dna size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold text-blue-800 text-sm">เกี่ยวกับ /scratch</p>
+            <p className="text-blue-700 text-sm mt-1">
+              ข้อมูลใน <code className="bg-blue-100 px-1 rounded font-mono">/scratch</code> จะถูกลบอัตโนมัติเมื่องานสิ้นสุด
+              ผลลัพธ์ที่ต้องการเก็บต้อง copy กลับมาที่ <code className="bg-blue-100 px-1 rounded font-mono">/home</code> ก่อนงานจบทุกครั้ง
+            </p>
+          </div>
+        </div>
       </section>
     </div>
   );

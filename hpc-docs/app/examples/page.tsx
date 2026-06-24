@@ -1,4 +1,4 @@
-import { FileCode, Cpu, Brain, BarChart2 } from "lucide-react";
+import { FileCode, Cpu, Brain, BarChart2, Dna } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
 
 export default function ExamplesPage() {
@@ -104,6 +104,58 @@ echo 'เสร็จสิ้นทุกขั้นตอน!'
 srun --partition=gpu --gres=gpu:1 python3 train.py
 srun --partition=cpu --cpus-per-task=8 --mem=16G ./my_program
 `} />
+      </section>
+
+      <section id="dorado-script" className="space-y-4">
+        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <Dna size={18} className="text-green-700" />
+          <span className="text-[#003087]">7.5</span> Dorado Basecalling (Oxford Nanopore GPU)
+        </h2>
+        <p className="text-slate-600 text-sm">
+          สคริปต์ตัวอย่างสำหรับรัน Dorado basecaller บน GPU partition
+          โมเดลต้องดาวน์โหลดไว้ที่พื้นที่ของตนเองก่อนส่งงาน
+        </p>
+        <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-sm">
+          <Dna size={15} className="text-amber-600 flex-shrink-0 mt-0.5" />
+          <p className="text-amber-700">
+            ดาวน์โหลดโมเดลก่อน:{" "}
+            <code className="bg-amber-100 px-1.5 py-0.5 rounded font-mono text-xs">
+              dorado download --model dna_r10.4.1_e8.2_400bps_hac@v5.0.0 --directory $HOME/dorado_models
+            </code>
+          </p>
+        </div>
+        <CodeBlock title="dorado_basecall.sh" language="bash" code={`#!/bin/bash
+#SBATCH --job-name=dorado
+#SBATCH --partition=gpu
+#SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=64G
+#SBATCH --time=24:00:00
+#SBATCH --output=%x_%j.out
+#SBATCH --error=%x_%j.err
+
+# ── 1. กำหนด path (แก้ค่าให้ตรงกับข้อมูลของคุณ) ──────────
+INPUT="$HOME/data"
+OUTPUT="$HOME/results"
+MODEL="$HOME/dorado_models/dna_r10.4.1_e8.2_400bps_hac@v5.0.0"
+
+# ── 2. เตรียม scratch (local SSD) เพื่อความเร็ว ──────────
+SCRATCH="/scratch/\${USER}/\${SLURM_JOB_ID}"
+mkdir -p \${SCRATCH}
+cp -r \${INPUT}/* \${SCRATCH}/
+
+mkdir -p \${OUTPUT}
+
+# ── 3. รัน basecalling ────────────────────────────────────
+dorado basecaller \${MODEL} \${SCRATCH} --device cuda:0 > \${SCRATCH}/calls.bam
+
+# ── 4. เก็บผลลัพธ์กลับ $HOME (ก่อน job จบ เพราะ scratch ถูกลบ) ──
+cp \${SCRATCH}/calls.bam \${OUTPUT}/
+
+# ── 5. ล้าง scratch ───────────────────────────────────────
+rm -rf \${SCRATCH}
+
+echo "Basecalling เสร็จสิ้น ผลลัพธ์อยู่ที่ \${OUTPUT}/calls.bam"`} />
       </section>
     </div>
   );

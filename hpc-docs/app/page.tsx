@@ -36,10 +36,10 @@ export default function HomePage() {
             </p>
             <div className="flex items-center gap-2 mt-4">
               <span className="bg-white/10 text-white text-xs px-3 py-1 rounded-full border border-white/20 font-medium">
-                Version 1.0 Production
+                Version 1.1 Testbeta
               </span>
               <span className="bg-white/10 text-white text-xs px-3 py-1 rounded-full border border-white/20 font-medium">
-                ปรับปรุง พฤษภาคม 2568
+                ปรับปรุง มิถุนายน 2569
               </span>
             </div>
           </div>

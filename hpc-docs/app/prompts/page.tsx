@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Terminal, Copy, Check, MessageSquare, ShieldAlert, Sparkles, Sliders, HelpCircle, FileJson } from "lucide-react";
+import { Terminal, Copy, Check, MessageSquare, ShieldAlert, Sparkles, Sliders, HelpCircle, FileJson, Dna } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
 
 export default function PromptsPage() {
@@ -13,7 +13,7 @@ export default function PromptsPage() {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  const systemPrompt = `คุณคือผู้เชี่ยวชาญด้านระบบ HPC และ Slurm ที่จะช่วยฉันใช้งานระบบต่อไปนี้ได้อย่างถูกต้อง
+  const systemPrompt = `คุณคือผู้เชี่ยวชาญด้านระบบ HPC, Slurm และ Bioinformatics ที่จะช่วยฉันใช้งานระบบต่อไปนี้ได้อย่างถูกต้อง
 ข้อมูลระบบ HPC:
 
 Compute Node: 2 เครื่อง แต่ละเครื่องมี CPU 64 cores, RAM 503 GB, GPU NVIDIA A40 1 ตัว
@@ -23,8 +23,13 @@ Job Scheduler: Slurm Workload Manager
 
 Partitions ที่มี:
 - cpu (วิ่งได้สูงสุด 7 วัน) สำหรับงาน CPU ทั่วไป
-- gpu (วิ่งได้สูงสุด 3 วัน) สำหรับงาน AI/ML ที่ต้องการ GPU
+- gpu (วิ่งได้สูงสุด 3 วัน) สำหรับงาน AI/ML และ Bioinformatics ที่ต้องการ GPU
 - short (วิ่งได้สูงสุด 1 ชั่วโมง) สำหรับการทดสอบและ debug
+
+ซอฟต์แวร์ Bioinformatics ที่ติดตั้งในระบบ:
+- Dorado 1.3.0+6ea400189 (Oxford Nanopore basecaller) — ต้องรันบน GPU partition
+  * โมเดลไม่ได้รวมมาด้วย ผู้ใช้ต้องดาวน์โหลดโมเดลเองไปเก็บที่ $HOME/dorado_models ก่อนใช้งาน
+  * ดาวน์โหลดโมเดล: dorado download --model <model_name> --directory $HOME/dorado_models
 
 กฎสำคัญของระบบ:
 1. ห้ามรันโปรแกรมหนักบน Login Node ต้องใช้ sbatch หรือ srun เท่านั้น
@@ -104,12 +109,34 @@ Partitions ที่มี:
       desc: "ช่วยลำดับขั้นตอนและเชื่อมโยงงานก่อนหลังอย่างเป็นระบบ (Job Dependency)",
       icon: FileJson,
       color: "bg-orange-50 border-orange-200 text-orange-700",
-      prompt: `ฉันต้องการทำงาน 3 ขั้นตอนตามลำดับ: 
+      prompt: `ฉันต้องการทำงาน 3 ขั้นตอนตามลำดับ:
 1) preprocess ข้อมูล
 2) train model
 3) evaluate ผลลัพธ์
 
 ช่วยออกแบบว่าควรแยกเป็นกี่ job และเขียน script แต่ละอันอย่างไร`,
+    },
+    {
+      id: "cat-7",
+      title: "กลุ่มที่ 7 — Dorado Basecalling (Oxford Nanopore Sequencing)",
+      desc: "สำหรับผู้ใช้ที่ต้องการรัน Dorado basecaller บนข้อมูล Oxford Nanopore ระบบมี Dorado 1.3.0 พร้อมใช้งานบน GPU partition (ต้องดาวน์โหลดโมเดลเองก่อน)",
+      icon: Dna,
+      color: "bg-green-50 border-green-200 text-green-700",
+      prompt: `ฉันต้องการรัน Dorado basecalling บนข้อมูล Oxford Nanopore ของฉัน
+ระบบ HPC มี Dorado 1.3.0+6ea400189 บน GPU partition (NVIDIA A40)
+
+ข้อมูลของฉัน:
+- ชนิดข้อมูล: [เช่น POD5 / FAST5]
+- ขนาดข้อมูล: [เช่น 500 GB]
+- เครื่องมือ kit: [เช่น SQK-LSK114]
+- โมเดลที่ต้องการ: [เช่น dna_r10.4.1_e8.2_400bps_hac@v5.0.0 หรือไม่แน่ใจ]
+- โมเดลดาวน์โหลดแล้วที่: $HOME/dorado_models (หรือยังไม่ได้ดาวน์โหลด)
+
+ช่วย:
+1. แนะนำโมเดลที่เหมาะสม (ถ้าฉันยังไม่แน่ใจ)
+2. เขียนคำสั่งดาวน์โหลดโมเดล
+3. เขียน Slurm job script สำหรับ basecalling พร้อมใช้งาน /scratch
+4. ประเมิน --time และ --mem ที่เหมาะสมสำหรับข้อมูลขนาดนี้`,
     },
   ];
 

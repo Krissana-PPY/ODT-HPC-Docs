@@ -1,14 +1,15 @@
-import { Package, CheckCircle } from "lucide-react";
+import { Package, CheckCircle, Dna } from "lucide-react";
 
 export default function SoftwarePage() {
   const software = [
-    { name: "NVIDIA Driver", version: "595.71.05" },
-    { name: "CUDA", version: "13.2" },
-    { name: "JupyterHub", version: "5.4.6" },
-    { name: "JupyterLab", version: "4.x" },
-    { name: "Python", version: "3.9.25" },
-    { name: "Node.js", version: "16.20.2" },
-    { name: "Open OnDemand", version: "3.1" },
+    { name: "NVIDIA Driver", version: "595.71.05", category: "system" },
+    { name: "CUDA", version: "13.2", category: "system" },
+    { name: "JupyterHub", version: "5.4.6", category: "system" },
+    { name: "JupyterLab", version: "4.x", category: "system" },
+    { name: "Python", version: "3.9.25", category: "system" },
+    { name: "Node.js", version: "16.20.2", category: "system" },
+    { name: "Open OnDemand", version: "3.1", category: "system" },
+    { name: "Dorado", version: "1.3.0+6ea400189", category: "system" },
   ];
 
   return (
@@ -39,9 +40,12 @@ export default function SoftwarePage() {
             <tbody>
               {software.map((sw) => (
                 <tr key={sw.name}>
-                  <td className="font-medium text-slate-800">{sw.name}</td>
+                  <td className="font-medium text-slate-800 flex items-center gap-1.5">
+                    {sw.category === "bio" && <Dna size={13} className="text-green-600 flex-shrink-0" />}
+                    {sw.name}
+                  </td>
                   <td>
-                    <code className="bg-purple-100 text-purple-800 px-2 py-0.5 rounded font-mono text-sm">
+                    <code className={`px-2 py-0.5 rounded font-mono text-sm ${sw.category === "bio" ? "bg-green-100 text-green-800" : "bg-purple-100 text-purple-800"}`}>
                       {sw.version}
                     </code>
                   </td>
@@ -70,6 +74,36 @@ export default function SoftwarePage() {
               <p className="text-slate-600 text-sm">{item.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+          <Dna size={18} className="text-green-600" />
+          Bioinformatics Tools
+        </h2>
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="bg-green-50 px-5 py-3 border-b border-green-100">
+            <p className="text-green-800 text-sm font-medium">เครื่องมือสำหรับงานชีวสารสนเทศ พร้อมใช้งานบน GPU partition</p>
+          </div>
+          <div className="p-5">
+            <div className="flex items-start gap-4">
+              <div className="bg-green-100 rounded-xl p-3">
+                <Dna size={24} className="text-green-700" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-3 flex-wrap">
+                  <h3 className="font-bold text-slate-800">Oxford Nanopore Dorado</h3>
+                  <code className="bg-green-100 text-green-800 px-2 py-0.5 rounded font-mono text-xs">1.3.0+6ea400189</code>
+                </div>
+                <p className="text-slate-600 text-sm mt-1.5">Basecaller สำหรับข้อมูล Oxford Nanopore sequencing รองรับ GPU เพื่อความเร็วในการประมวลผล</p>
+                <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+                  <p className="text-amber-800 text-xs font-semibold mb-1">สำคัญ: โมเดลต้องดาวน์โหลดเอง</p>
+                  <p className="text-amber-700 text-xs">Dorado ไม่ได้รวมโมเดลมาด้วย ผู้ใช้ต้องดาวน์โหลดโมเดลที่ต้องการไปเก็บไว้ในพื้นที่ของตนเองก่อนใช้งาน ดูวิธีดาวน์โหลดได้ที่หน้าการส่งงาน</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

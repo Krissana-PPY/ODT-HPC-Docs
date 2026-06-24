@@ -4,7 +4,7 @@
 
 ---
 
-## 🖥️ ภาพรวมโปรเจกต์
+## ภาพรวมโปรเจกต์
 
 | รายการ | รายละเอียด |
 |---|---|
@@ -13,10 +13,12 @@
 | Language | TypeScript |
 | Deploy | Docker + Nginx |
 | HPC Platform | Slurm Workload Manager |
+| Version | 1.1 Testbeta |
+| ปรับปรุงล่าสุด | มิถุนายน 2569 |
 
 ---
 
-## 📁 โครงสร้างโปรเจกต์
+## โครงสร้างโปรเจกต์
 
 ```
 ODT-HPC-Docs/
@@ -47,14 +49,12 @@ ODT-HPC-Docs/
 │   ├── docker-compose.yml
 │   └── package.json
 ├── image/                     # Source images (original)
-├── confix1.md                 # Spec/Change log 1
-├── confix2.md                 # Spec/Change log 2
 └── README.md                  # คู่มือนี้
 ```
 
 ---
 
-## 🚀 การรันโปรเจกต์
+## การรันโปรเจกต์
 
 ### วิธีที่ 1: รันด้วย npm (Development)
 
@@ -82,8 +82,9 @@ cd hpc-docs
 docker-compose up -d
 ```
 
+---
 
-## 📋 หน้าต่างๆ ในระบบ
+## หน้าต่างๆ ในระบบ
 
 | Path | หัวข้อ |
 |---|---|
@@ -91,18 +92,29 @@ docker-compose up -d
 | `/quick-start` | เริ่มต้นใช้งานด่วน (OOD, JupyterHub, SSH) |
 | `/software` | Software & Environment Modules |
 | `/slurm-commands` | คำสั่ง Slurm พื้นฐาน |
-| `/job-submission` | การส่งงาน (Batch, Interactive, GPU, MPI, Array) |
+| `/job-submission` | การส่งงาน (Batch, Interactive, GPU, MPI, Array, Dorado) |
 | `/scratch` | การใช้งาน /scratch (SSD Local Storage) |
-| `/examples` | ตัวอย่างสคริปต์ (Python, PyTorch, R) |
+| `/examples` | ตัวอย่างสคริปต์ (Python, PyTorch, Dorado) |
 | `/job-management` | การจัดการงาน (squeue, scancel, quota) |
 | `/prompts` | Prompt AI สำหรับช่วยใช้งาน HPC |
 
 ---
 
-## 🔗 ลิงก์สำหรับ Docs
+## ลิงก์สำหรับ Docs
 
 | ช่องทาง | URL |
 |---|---|
 | คู่มือการใช้งาน (Docs) | https://odt-hpc-docs.kku.ac.th |
+| ขอใช้บริการ HPC Server | https://kku.world/4rql5x |
+| ขอโปรแกรม / ขอเพิ่มพื้นที่ | https://kku.world/sbqzt4 |
+
 ---
 
+## Changelog
+
+### v1.1 Testbeta (มิถุนายน 2569)
+- เพิ่ม Dorado 1.3.0+6ea400189 ใน Software & Environment
+- เพิ่ม section การส่งงาน Dorado Basecalling (5.6) ใน Job Submission
+- เพิ่มตัวอย่างสคริปต์ Dorado (7.5) ใน Script Examples
+- เพิ่ม Prompt AI สำหรับ Dorado Basecalling (กลุ่มที่ 7)
+- อัปเดต System Prompt ให้ครอบคลุม Bioinformatics tools
