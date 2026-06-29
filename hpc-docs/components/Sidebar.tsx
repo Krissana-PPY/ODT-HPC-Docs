@@ -8,10 +8,8 @@ import {
   Package,
   Terminal,
   Send,
-  Database,
   FileCode,
   Settings,
-  HelpCircle,
   ChevronRight,
   ExternalLink,
   FileText,
@@ -20,102 +18,143 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const navItems = [
+type NavItem = {
+  href: string;
+  label: string;
+  icon: React.ElementType;
+  description: string;
+  subtopics?: { label: string; hash: string }[];
+};
+
+type NavGroup = {
+  groupLabel: string;
+  items: NavItem[];
+};
+
+const navGroups: NavGroup[] = [
   {
-    href: "/quick-start",
-    label: "เริ่มต้นใช้งานด่วน",
-    icon: Zap,
-    description: "Quick Start Guide",
-    subtopics: [
-      { label: "OOD: เข้าผ่านหน้าเว็บ", hash: "#ood" },
-      { label: "JupyterHub: เข้าทำงานด่วน", hash: "#jupyter" },
-      { label: "SSH: ผ่านคีย์เวิร์ดหน้าจอหลัก", hash: "#ssh" },
-      { label: "File Transfer: ส่งข้อมูลงาน", hash: "#transfer" },
+    groupLabel: "เริ่มต้นใช้งาน",
+    items: [
+      {
+        href: "/quick-start",
+        label: "เริ่มต้นใช้งานด่วน",
+        icon: Zap,
+        description: "Quick Start Guide",
+        subtopics: [
+          { label: "OOD: เข้าผ่านหน้าเว็บ", hash: "#ood" },
+          { label: "JupyterHub: เข้าทำงานด่วน", hash: "#jupyter" },
+          { label: "SSH: ผ่านคีย์เวิร์ดหน้าจอหลัก", hash: "#ssh" },
+          { label: "File Transfer: ส่งข้อมูลงาน", hash: "#transfer" },
+        ],
+      },
+      {
+        href: "/",
+        label: "ภาพรวมระบบ HPC",
+        icon: BookOpen,
+        description: "ภาพรวมระบบ HPC",
+        subtopics: [
+          { label: "บทนำระบบความเร็วสูง", hash: "#intro" },
+          { label: "ภาพรวมสเปคฮาร์ดแวร์", hash: "#overview" },
+          { label: "พาร์ติชันคิวทำงานหลัก", hash: "#partitions" },
+          { label: "กฎเหล็กความปลอดภัยสำคัญ", hash: "#rules" },
+        ],
+      },
     ],
   },
   {
-    href: "/",
-    label: "บทคำนำและภาพรวมระบบ",
-    icon: BookOpen,
-    description: "ภาพรวมระบบ HPC",
-    subtopics: [
-      { label: "บทนำระบบความเร็วสูง", hash: "#intro" },
-      { label: "ภาพรวมสเปคฮาร์ดแวร์", hash: "#overview" },
-      { label: "พาร์ติชันคิวทำงานหลัก", hash: "#partitions" },
-      { label: "กฎเหล็กความปลอดภัยสำคัญ", hash: "#rules" },
+    groupLabel: "ซอฟต์แวร์",
+    items: [
+      {
+        href: "/software",
+        label: "Software & Environment",
+        icon: Package,
+        description: "รายการซอฟต์แวร์และคู่มือ",
+        subtopics: [
+          { label: "รายการซอฟต์แวร์ที่ติดตั้ง", hash: "#installed" },
+          { label: "Miniconda: สร้าง Environment", hash: "#miniconda" },
+          { label: "Apptainer: ใช้งาน Container", hash: "#apptainer" },
+          { label: "Bioinformatics Tools (Dorado)", hash: "#bio-tools" },
+        ],
+      },
     ],
   },
   {
-    href: "/software",
-    label: "Software & Environment",
-    icon: Package,
-    description: "รายการซอฟต์แวร์"
-  },
-  {
-    href: "/slurm-commands",
-    label: "คำสั่ง Slurm พื้นฐาน",
-    icon: Terminal,
-    description: "คำสั่งที่จำเป็น",
-    subtopics: [
-      { label: "ตารางคำสั่งทั่วไป", hash: "#general" },
-      { label: "ตรวจสอบสถานะ Cluster", hash: "#job-state" },
-      { label: "ตรวจสอบสถานะงาน", hash: "#job-status" },
+    groupLabel: "การทำงาน Slurm",
+    items: [
+      {
+        href: "/slurm-commands",
+        label: "คำสั่ง Slurm พื้นฐาน",
+        icon: Terminal,
+        description: "คำสั่งที่จำเป็น",
+        subtopics: [
+          { label: "ตารางคำสั่งทั่วไป", hash: "#general" },
+          { label: "ตรวจสอบสถานะ Cluster", hash: "#job-state" },
+          { label: "ตรวจสอบสถานะงาน", hash: "#job-status" },
+        ],
+      },
+      {
+        href: "/job-submission",
+        label: "การส่งงาน (Submission)",
+        icon: Send,
+        description: "Job Submission",
+        subtopics: [
+          { label: "เกี่ยวกับ /scratch", hash: "#scratch" },
+          { label: "Batch Job ทั่วไป", hash: "#batch" },
+          { label: "Interactive Job", hash: "#interactive" },
+          { label: "GPU Job", hash: "#gpu" },
+          { label: "Multi-Node MPI", hash: "#multinode" },
+          { label: "Array Job", hash: "#array" },
+          { label: "Conda Environment Job", hash: "#conda" },
+          { label: "Apptainer Container Job", hash: "#apptainer-job" },
+          { label: "Nextflow Pipeline", hash: "#nextflow" },
+          { label: "RStudio Server", hash: "#rstudio" },
+          { label: "Dorado Basecalling", hash: "#dorado" },
+        ],
+      },
+      {
+        href: "/job-management",
+        label: "การจัดการงาน",
+        icon: Settings,
+        description: "จัดการ Jobs",
+        subtopics: [
+          { label: "คำสั่งยกเลิกงาน", hash: "#scancel" },
+          { label: "ดูผลลัพธ์งาน", hash: "#sacct" },
+          { label: "ดูรายละเอียดงาน", hash: "#scontrol" },
+          { label: "ตรวจสอบการใช้งานดิสก์", hash: "#disk-usage" },
+        ],
+      },
     ],
   },
   {
-    href: "/job-submission",
-    label: "การส่งงาน (Submission)",
-    icon: Send,
-    description: "Job Submission",
-    subtopics: [
-      { label: "สคริปต์ Batch ทั่วไป", hash: "#batch" },
-      { label: "งานจำลองโต้ตอบ Interactive", hash: "#interactive" },
-      { label: "ขอเปิดใช้งานการคำนวณ GPU", hash: "#gpu" },
-      { label: "งานสเกลหลายโหนด (MPI)", hash: "#multinode" },
-      { label: "ประเภทงานวนซ้ำ Array Job", hash: "#array" },
-      { label: "Dorado Basecalling (Nanopore)", hash: "#dorado" },
-    ],
-  },
-  {
-    href: "/scratch",
-    label: "การใช้งาน /scratch",
-    icon: Database,
-    description: "I/O เร็ว SSD",
-  },
-  {
-    href: "/examples",
-    label: "ตัวอย่างสคริปต์",
-    icon: FileCode,
-    description: "Script Examples",
-    subtopics: [
-      { label: "Script CPU", hash: "#cpu-script" },
-      { label: "Script GPU", hash: "#gpu-script" },
-      { label: "Multi Script", hash: "#multi-script" },
-      { label: "คำสั่งใช้งานอย่างรวดเร็ว", hash: "#fast-commands" },
-      { label: "Dorado Basecalling", hash: "#dorado-script" },
-    ],
-  },
-  {
-    href: "/job-management",
-    label: "การจัดการงาน",
-    icon: Settings,
-    description: "จัดการ Jobs",
-    subtopics: [
-      { label: "คำสั่งยกเลิกงาน", hash: "#scancel" },
-      { label: "ดูผลลัพธ์งาน", hash: "#sacct" },
-      { label: "ดูรายละเอียดงาน", hash: "#scontrol" },
-      { label: "ตรวจสอบการใช้งานดิสก์", hash: "#disk-usage" },
-    ],
-  },
-  {
-    href: "/prompts",
-    label: "Prompt AI สำหรับช่วยใช้งาน",
-    icon: MessageSquare,
-    description: "AI Prompt helper",
-    subtopics: [
-      { label: "Prompt ระบบ", hash: "#system-context" },
-      { label: "Prompt คำสั่งต่างๆ", hash: "#command-prompts" },
-      { label: "Prompt กรณีศึกษา", hash: "#cases" },
+    groupLabel: "ตัวอย่าง & เครื่องมือ",
+    items: [
+      {
+        href: "/examples",
+        label: "ตัวอย่างสคริปต์",
+        icon: FileCode,
+        description: "Script Examples",
+        subtopics: [
+          { label: "Python CPU", hash: "#cpu-script" },
+          { label: "Python GPU / Deep Learning", hash: "#gpu-script" },
+          { label: "Python หลายไฟล์", hash: "#multi-script" },
+          { label: "Conda Environment", hash: "#conda-script" },
+          { label: "Apptainer Container", hash: "#apptainer-script" },
+          { label: "Nextflow Pipeline", hash: "#nextflow-script" },
+          { label: "Dorado Basecalling", hash: "#dorado-script" },
+          { label: "คำสั่งด่วน (srun)", hash: "#fast-commands" },
+        ],
+      },
+      {
+        href: "/prompts",
+        label: "Prompt AI สำหรับช่วยใช้งาน",
+        icon: MessageSquare,
+        description: "AI Prompt helper",
+        subtopics: [
+          { label: "Prompt ระบบ", hash: "#system-context" },
+          { label: "Prompt คำสั่งต่างๆ", hash: "#command-prompts" },
+          { label: "Prompt กรณีศึกษา", hash: "#cases" },
+        ],
+      },
     ],
   },
 ];
@@ -127,8 +166,8 @@ export function Sidebar() {
     <>
       {/* Desktop Sidebar - Fixed */}
       <aside className="hidden lg:flex flex-col fixed left-0 top-16 bottom-0 w-72 bg-white border-r border-slate-200 z-40 overflow-y-auto select-none">
-        
-        {/* KKU Required links inside Sidebar vertical with softer Yellow/Orange style */}
+
+        {/* Quick links */}
         <div className="p-4 border-b border-slate-100 bg-gradient-to-b from-yellow-50/50 to-white space-y-4">
           <div>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
@@ -143,13 +182,10 @@ export function Sidebar() {
               >
                 <FileText size={14} className="flex-shrink-0 text-yellow-300" />
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs leading-none text-white">
-                    ขอใช้บริการ HPC Server
-                  </div>
+                  <div className="font-bold text-xs leading-none text-white">ขอใช้บริการ HPC Server</div>
                 </div>
                 <ExternalLink size={10} className="flex-shrink-0 opacity-60 group-hover:opacity-100 text-white" />
               </a>
-              
               <a
                 href="https://kku.world/sbqzt4"
                 target="_blank"
@@ -158,9 +194,7 @@ export function Sidebar() {
               >
                 <HardDrive size={14} className="flex-shrink-0 text-yellow-300" />
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs leading-none text-white">
-                    ขอเพิ่มพื้นที่ / โปรแกรม
-                  </div>
+                  <div className="font-bold text-xs leading-none text-white">ขอเพิ่มพื้นที่ / โปรแกรม</div>
                 </div>
                 <ExternalLink size={10} className="flex-shrink-0 opacity-60 group-hover:opacity-100 text-white" />
               </a>
@@ -172,118 +206,91 @@ export function Sidebar() {
               เข้าใช้งานระบบ (Portals & SSH)
             </p>
             <div className="space-y-2">
-              <a
-                href="https://odt-hpc.kku.ac.th"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-yellow-50/50 hover:bg-yellow-50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 transition-all duration-150 group"
-              >
+              <a href="https://odt-hpc.kku.ac.th" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-yellow-50/50 hover:bg-yellow-50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 transition-all duration-150 group">
                 <ExternalLink size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs leading-none text-slate-800">
-                    Open OnDemand (OOD)
-                  </div>
-                  <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">
-                    odt-hpc.kku.ac.th
-                  </div>
+                  <div className="font-bold text-xs leading-none text-slate-800">Open OnDemand (OOD)</div>
+                  <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">odt-hpc.kku.ac.th</div>
                 </div>
               </a>
-
-              <a
-                href="https://odt-hpc.kku.ac.th/jupyter"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-yellow-50/50 hover:bg-yellow-50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 transition-all duration-150 group"
-              >
+              <a href="https://odt-hpc.kku.ac.th/jupyter" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-yellow-50/50 hover:bg-yellow-50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 transition-all duration-150 group">
                 <BookOpen size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs leading-none text-slate-800">
-                    OOD JupyterHub
-                  </div>
-                  <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">
-                    odt-hpc.kku.ac.th/jupyter
-                  </div>
+                  <div className="font-bold text-xs leading-none text-slate-800">OOD JupyterHub</div>
+                  <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">odt-hpc.kku.ac.th/jupyter</div>
                 </div>
               </a>
-
-              <div
-                className="flex items-center gap-2 bg-yellow-50/50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 duration-150"
-              >
+              <div className="flex items-center gap-2 bg-yellow-50/50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5">
                 <Terminal size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs leading-none text-slate-800">
-                    SSH: Connect Server
-                  </div>
-                  <div className="text-[#C2612B] font-mono text-[9.5px] truncate leading-none mt-1 select-all font-bold">
-                    odt-hpc-cn.kku.ac.th
-                  </div>
+                  <div className="font-bold text-xs leading-none text-slate-800">SSH: Connect Server</div>
+                  <div className="text-[#C2612B] font-mono text-[9.5px] truncate leading-none mt-1 select-all font-bold">odt-hpc-cn.kku.ac.th</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 p-3">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-2">
-            คู่มือการใช้งานระบบ
-          </p>
-          <ul className="space-y-1">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href;
-              return (
-                <li key={item.href} className="space-y-0.5">
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs sm:text-sm transition-all duration-150 group",
-                      isActive
-                        ? "bg-yellow-50 text-slate-900 font-bold border-l-2 border-[#F5A623]"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                    )}
-                  >
-                    <Icon
-                      size={15}
-                      className={cn(
-                        "flex-shrink-0",
-                        isActive
-                          ? "text-[#F5A623]"
-                          : "text-slate-400 group-hover:text-slate-600"
+        {/* Navigation with groups */}
+        <nav className="flex-1 p-3 space-y-3">
+          {navGroups.map((group) => (
+            <div key={group.groupLabel}>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-1.5">
+                {group.groupLabel}
+              </p>
+              <ul className="space-y-0.5">
+                {group.items.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = pathname === item.href;
+                  return (
+                    <li key={item.href} className="space-y-0.5">
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          "flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs sm:text-sm transition-all duration-150 group",
+                          isActive
+                            ? "bg-yellow-50 text-slate-900 font-bold border-l-2 border-[#F5A623]"
+                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                        )}
+                      >
+                        <Icon
+                          size={15}
+                          className={cn(
+                            "flex-shrink-0",
+                            isActive ? "text-[#F5A623]" : "text-slate-400 group-hover:text-slate-600"
+                          )}
+                        />
+                        <span className="flex-1 truncate">{item.label}</span>
+                        {isActive && <ChevronRight size={13} className="text-[#F5A623] flex-shrink-0" />}
+                      </Link>
+                      {isActive && item.subtopics && item.subtopics.length > 0 && (
+                        <ul className="pl-8 pr-2 py-1 space-y-1.5 border-l border-yellow-200 ml-5 animate-fade-in-up">
+                          {item.subtopics.map((sub, sidx) => (
+                            <li key={sidx}>
+                              <Link
+                                href={`${item.href === "/" ? "" : item.href}${sub.hash}`}
+                                className="block text-[11.5px] text-slate-500 hover:text-yellow-700 hover:font-semibold hover:underline transition-colors py-0.5 truncate"
+                              >
+                                • {sub.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
                       )}
-                    />
-                    <span className="flex-1 truncate">{item.label}</span>
-                    {isActive && (
-                      <ChevronRight size={13} className="text-[#F5A623] flex-shrink-0" />
-                    )}
-                  </Link>
-                  {/* Dynamic subtopics showing for active items */}
-                  {isActive && item.subtopics && item.subtopics.length > 0 && (
-                    <ul className="pl-8 pr-2 py-1 space-y-1.5 border-l border-yellow-250 ml-5 animate-fade-in-up">
-                      {item.subtopics.map((sub, sidx) => (
-                        <li key={sidx}>
-                          <Link
-                            href={`${item.href === "/" ? "" : item.href}${sub.hash}`}
-                            className="block text-[11.5px] text-slate-500 hover:text-yellow-700 hover:font-semibold hover:underline transition-colors py-0.5 truncate"
-                          >
-                            • {sub.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
         </nav>
 
         {/* Footer */}
         <div className="p-4 border-t border-slate-100">
           <div className="text-xs text-slate-400 text-center">
-            <div className="font-semibold text-slate-500">
-              ODT-HPC · KKU v1.1 Testbeta
-            </div>
+            <div className="font-semibold text-slate-500">ODT-HPC · KKU v1.2 Test beta</div>
             <div>มิถุนายน 2569</div>
           </div>
         </div>

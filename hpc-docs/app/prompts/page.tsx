@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Terminal, Copy, Check, MessageSquare, ShieldAlert, Sparkles, Sliders, HelpCircle, FileJson, Dna } from "lucide-react";
+import { Terminal, Copy, Check, MessageSquare, ShieldAlert, Sparkles, Sliders, HelpCircle, FileJson, Dna, FlaskConical, Box, GitBranch } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
 
 export default function PromptsPage() {
@@ -13,35 +13,41 @@ export default function PromptsPage() {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  const systemPrompt = `คุณคือผู้เชี่ยวชาญด้านระบบ HPC, Slurm และ Bioinformatics ที่จะช่วยฉันใช้งานระบบต่อไปนี้ได้อย่างถูกต้อง
-ข้อมูลระบบ HPC:
+  const systemPrompt = `คุณคือผู้เชี่ยวชาญด้านระบบ HPC, Slurm, Bioinformatics และ Container/Workflow ที่จะช่วยฉันใช้งานระบบต่อไปนี้ได้อย่างถูกต้อง
 
+ข้อมูลระบบ HPC (ODT-HPC KKU):
 Compute Node: 2 เครื่อง แต่ละเครื่องมี CPU 64 cores, RAM 503 GB, GPU NVIDIA A40 1 ตัว
 Local Scratch: SSD ~6 TB ต่อ node ที่ /scratch (ลบอัตโนมัติเมื่องานจบ)
 Home Directory: 300 GB quota ต่อ user ที่ /home
 Job Scheduler: Slurm Workload Manager
 
 Partitions ที่มี:
-- cpu (วิ่งได้สูงสุด 7 วัน) สำหรับงาน CPU ทั่วไป
-- gpu (วิ่งได้สูงสุด 3 วัน) สำหรับงาน AI/ML และ Bioinformatics ที่ต้องการ GPU
-- short (วิ่งได้สูงสุด 1 ชั่วโมง) สำหรับการทดสอบและ debug
+- cpu (max 7 วัน) สำหรับงาน CPU ทั่วไป, R, Python, Nextflow
+- gpu (max 3 วัน) สำหรับงาน AI/ML, Deep Learning, Dorado, Apptainer+GPU
+- short (max 1 ชม.) สำหรับทดสอบและ debug
 
-ซอฟต์แวร์ Bioinformatics ที่ติดตั้งในระบบ:
-- Dorado 1.3.0+6ea400189 (Oxford Nanopore basecaller) — ต้องรันบน GPU partition
-  * โมเดลไม่ได้รวมมาด้วย ผู้ใช้ต้องดาวน์โหลดโมเดลเองไปเก็บที่ $HOME/dorado_models ก่อนใช้งาน
-  * ดาวน์โหลดโมเดล: dorado download --model <model_name> --directory $HOME/dorado_models
+ซอฟต์แวร์ที่ติดตั้งในระบบ:
+- Python 3.9.25, Miniconda (conda 26.3.2) — สร้าง env ได้ที่ $HOME/miniconda3/envs/
+- RStudio Server 2026.04.0 — เข้าใช้ผ่าน Open OnDemand (OOD)
+- Apptainer 1.5.1 — container runtime รองรับ Docker images และ GPU (--nv flag)
+- Nextflow 26.04.4 — workflow manager รองรับ Slurm executor โดยตรง
+- Dorado 1.3.0+6ea400189 — Oxford Nanopore basecaller (ต้องรันบน GPU partition)
+  * โมเดลไม่รวมมาด้วย ต้องดาวน์โหลดเองที่ $HOME/dorado_models ก่อนใช้งาน
+- CUDA Toolkit 12.6, CUDA Driver 13.2, NVIDIA A40 GPU
 
 กฎสำคัญของระบบ:
 1. ห้ามรันโปรแกรมหนักบน Login Node ต้องใช้ sbatch หรือ srun เท่านั้น
 2. ผลลัพธ์สำคัญต้องเซฟที่ /home เท่านั้น ข้อมูลใน /scratch จะหายหลังงานจบ
-3. ควร output ไฟล์ไปที่ /home/%u/job-%j.out และ /home/%u/job-%j.err
-4. ควรใช้ /scratch/$SLURM_JOB_ID/ สำหรับไฟล์ชั่วคราวระหว่างงาน แล้ว copy ผลลัพธ์กลับ /home ก่อนจบ
+3. output ไฟล์แนะนำที่ /home/%u/job-%j.out และ /home/%u/job-%j.err
+4. ใช้ /scratch/$SLURM_JOB_ID/ สำหรับไฟล์ชั่วคราว แล้ว copy ผลลัพธ์กลับ /home ก่อนจบ
+5. Conda: ต้องมี "source $HOME/miniconda3/etc/profile.d/conda.sh" ก่อน activate ใน script
+6. Apptainer GPU: ต้องเพิ่ม --nv flag เพื่อส่ง GPU เข้า container
 
 สิ่งที่ฉันต้องการจากคุณ:
-1. เมื่อเขียน job script ให้อธิบายทุก parameter ที่เลือก พร้อมเหตุผล
-2. หากต้องการข้อมูลเพิ่มเติมจากฉัน ให้ถามก่อนเขียน script
-3. แจ้งเตือนหากคำขอของฉันมีความเสี่ยง เช่น ขอ RAM มากเกินไป หรือ script อาจ timeout
-4. แนะนำ best practice เสมอ เช่น การใช้ /scratch, การทำ checkpoint
+1. เมื่อเขียน job script ให้อธิบายทุก parameter พร้อมเหตุผล
+2. ถามข้อมูลเพิ่มเติมก่อนเขียน script หากข้อมูลไม่ครบ
+3. แจ้งเตือนความเสี่ยง เช่น ขอ RAM มากเกินไป หรือ script อาจ timeout
+4. แนะนำ best practice เสมอ เช่น การใช้ /scratch, checkpoint, conda env
 
 รับทราบระบบแล้วตอบว่า "พร้อมแล้ว" และรอคำถามจากฉัน`;
 
@@ -137,6 +143,55 @@ Partitions ที่มี:
 2. เขียนคำสั่งดาวน์โหลดโมเดล
 3. เขียน Slurm job script สำหรับ basecalling พร้อมใช้งาน /scratch
 4. ประเมิน --time และ --mem ที่เหมาะสมสำหรับข้อมูลขนาดนี้`,
+    },
+    {
+      id: "cat-8",
+      title: "กลุ่มที่ 8 — Conda Environment & Package Management",
+      desc: "สำหรับผู้ใช้ที่ต้องการสร้าง conda environment ใน $HOME หรือต้องการใช้ environment ใน job script",
+      icon: FlaskConical,
+      color: "bg-blue-50 border-blue-200 text-blue-700",
+      prompt: `ฉันต้องการใช้ Miniconda (conda 26.3.2) บนระบบ HPC ODT-HPC KKU เพื่อ:
+[อธิบายสิ่งที่ต้องการ เช่น สร้าง environment สำหรับงาน bioinformatics / ติดตั้ง PyTorch / ใช้ R packages]
+
+ช่วย:
+1. เขียนคำสั่งสร้าง conda environment พร้อมระบุ Python version และ packages ที่ต้องการ
+2. เขียน Slurm job script ที่ activate conda environment ถูกต้อง
+3. แนะนำ best practice เกี่ยวกับ quota ของ $HOME (300 GB)`,
+    },
+    {
+      id: "cat-9",
+      title: "กลุ่มที่ 9 — Apptainer Container Job",
+      desc: "สำหรับผู้ใช้ที่ต้องการรัน Docker/Singularity container บน HPC ด้วย Apptainer 1.5.1 รองรับทั้ง CPU และ GPU",
+      icon: Box,
+      color: "bg-indigo-50 border-indigo-200 text-indigo-700",
+      prompt: `ฉันต้องการรัน container ด้วย Apptainer 1.5.1 บนระบบ HPC ODT-HPC KKU
+
+ข้อมูล container ของฉัน:
+- Image ที่ต้องการ: [เช่น docker://python:3.11 / docker://biocontainers/samtools / ไฟล์ .sif ที่มีอยู่แล้ว]
+- ต้องการ GPU: [ใช่/ไม่ใช่]
+- Input data ที่ต้อง mount: [เช่น $HOME/data]
+- คำสั่งที่ต้องรันใน container: [ระบุ]
+
+ช่วยเขียน Slurm job script สำหรับรัน Apptainer container พร้อมคำอธิบาย flag ที่สำคัญ`,
+    },
+    {
+      id: "cat-10",
+      title: "กลุ่มที่ 10 — Nextflow Pipeline (Slurm Executor)",
+      desc: "สำหรับผู้ใช้ที่ต้องการรัน Nextflow pipeline โดยให้ Nextflow ส่ง sub-job เข้าคิว Slurm โดยอัตโนมัติ",
+      icon: GitBranch,
+      color: "bg-teal-50 border-teal-200 text-teal-700",
+      prompt: `ฉันต้องการรัน Nextflow 26.04.4 pipeline บนระบบ HPC ODT-HPC KKU โดยใช้ Slurm executor
+
+ข้อมูลของฉัน:
+- Pipeline: [เช่น nf-core/rnaseq / pipeline ที่เขียนเอง]
+- ประเภทงาน: [เช่น RNA-seq / WGS / custom analysis]
+- ขนาดข้อมูล input: [เช่น 10 samples × 5 GB]
+- ต้องการ GPU sub-jobs: [ใช่/ไม่ใช่]
+
+ช่วย:
+1. เขียน nextflow.config สำหรับ Slurm executor
+2. เขียน Slurm head job script สำหรับรัน Nextflow
+3. กำหนด process labels และ resource allocation ที่เหมาะสม`,
     },
   ];
 

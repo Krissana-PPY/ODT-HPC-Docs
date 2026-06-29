@@ -13,7 +13,7 @@
 | Language | TypeScript |
 | Deploy | Docker + Nginx |
 | HPC Platform | Slurm Workload Manager |
-| Version | 1.1 Testbeta |
+| Version | 1.2 Test beta |
 | ปรับปรุงล่าสุด | มิถุนายน 2569 |
 
 ---
@@ -26,30 +26,33 @@ ODT-HPC-Docs/
 │   ├── app/                   # App Router pages
 │   │   ├── page.tsx           # หน้าแรก (ภาพรวมระบบ)
 │   │   ├── quick-start/       # เริ่มต้นใช้งานด่วน
-│   │   ├── software/          # Software & Environment
+│   │   ├── software/          # Software & Environment + Usage Guides
 │   │   ├── slurm-commands/    # คำสั่ง Slurm
-│   │   ├── job-submission/    # การส่งงาน
-│   │   ├── scratch/           # การใช้งาน /scratch
+│   │   ├── job-submission/    # การส่งงาน (รวม /scratch)
+│   │   ├── scratch/           # /scratch (redirect ไว้ backward compat)
 │   │   ├── examples/          # ตัวอย่างสคริปต์
 │   │   ├── job-management/    # การจัดการงาน
 │   │   └── prompts/           # Prompt AI helper
 │   ├── components/
 │   │   ├── Navbar.tsx         # Navigation bar (gradient orange→yellow)
-│   │   ├── Sidebar.tsx        # Sidebar with subtopics + quick links
+│   │   ├── Sidebar.tsx        # Sidebar แบบ grouped (4 กลุ่ม)
 │   │   ├── CodeBlock.tsx      # Syntax-highlighted code blocks
 │   │   └── ZoomableImage.tsx  # Clickable zoom modal for images
 │   ├── lib/
-│   │   └── utils.ts           # Utility functions
+│   │   └── utils.ts
 │   ├── styles/
-│   │   └── globals.css        # Global CSS (Tailwind + custom classes)
+│   │   └── globals.css
 │   ├── public/
-│   │   └── images/            # รูปภาพประกอบคู่มือ (image-2.png – image-18.png)
-│   ├── nginx/                 # Nginx config for Docker deploy
+│   │   └── images/
+│   ├── nginx/
 │   ├── Dockerfile
 │   ├── docker-compose.yml
 │   └── package.json
-├── image/                     # Source images (original)
-└── README.md                  # คู่มือนี้
+├── image/
+├── confix.md
+├── confix1.md
+├── confix2.md
+└── README.md
 ```
 
 ---
@@ -90,13 +93,13 @@ docker-compose up -d
 |---|---|
 | `/` | บทนำและภาพรวมระบบ HPC |
 | `/quick-start` | เริ่มต้นใช้งานด่วน (OOD, JupyterHub, SSH) |
-| `/software` | Software & Environment Modules |
+| `/software` | Software & Environment + Guides (Miniconda, Apptainer, Dorado, Nextflow) |
 | `/slurm-commands` | คำสั่ง Slurm พื้นฐาน |
-| `/job-submission` | การส่งงาน (Batch, Interactive, GPU, MPI, Array, Dorado) |
-| `/scratch` | การใช้งาน /scratch (SSD Local Storage) |
-| `/examples` | ตัวอย่างสคริปต์ (Python, PyTorch, Dorado) |
+| `/job-submission` | การส่งงาน (Batch, Interactive, GPU, MPI, Array, Conda, Apptainer, Nextflow, RStudio, Dorado) |
+| `/scratch` | การใช้งาน /scratch (ยังคงอยู่เพื่อ backward compat) |
+| `/examples` | ตัวอย่างสคริปต์ (Python, GPU, Conda, Apptainer, Nextflow, Dorado) |
 | `/job-management` | การจัดการงาน (squeue, scancel, quota) |
-| `/prompts` | Prompt AI สำหรับช่วยใช้งาน HPC |
+| `/prompts` | Prompt AI สำหรับช่วยใช้งาน HPC (10 กลุ่ม) |
 
 ---
 
@@ -112,9 +115,17 @@ docker-compose up -d
 
 ## Changelog
 
+### v1.2 Test beta (มิถุนายน 2569)
+- เพิ่มซอฟต์แวร์: Miniconda (conda 26.3.2), Apptainer 1.5.1, CUDA Toolkit 12.6, Nextflow 26.04.4, RStudio Server 2026.04.0
+- เพิ่ม Usage Guides สำหรับ Miniconda และ Apptainer ใน Software page
+- ปรับโครงสร้าง Sidebar เป็น 4 กลุ่ม (เริ่มต้น, ซอฟต์แวร์, Slurm, ตัวอย่าง)
+- ย้ายเนื้อหา /scratch เข้า Job Submission page
+- เพิ่ม Job Submission: Conda, Apptainer, Nextflow, RStudio Server (5.6–5.10)
+- เพิ่มตัวอย่างสคริปต์: Conda, Apptainer, Nextflow (7.4–7.7)
+- เพิ่ม Prompt AI กลุ่ม 8–10: Conda, Apptainer, Nextflow
+- อัปเดต System Prompt ครอบคลุมซอฟต์แวร์ทั้งหมด
+
 ### v1.1 Testbeta (มิถุนายน 2569)
 - เพิ่ม Dorado 1.3.0+6ea400189 ใน Software & Environment
-- เพิ่ม section การส่งงาน Dorado Basecalling (5.6) ใน Job Submission
-- เพิ่มตัวอย่างสคริปต์ Dorado (7.5) ใน Script Examples
-- เพิ่ม Prompt AI สำหรับ Dorado Basecalling (กลุ่มที่ 7)
-- อัปเดต System Prompt ให้ครอบคลุม Bioinformatics tools
+- เพิ่ม Dorado Basecalling ใน Job Submission, Examples, Prompt AI
+- อัปเดต System Prompt ครอบคลุม Bioinformatics tools

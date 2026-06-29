@@ -6,7 +6,7 @@ import { Sidebar } from "@/components/Sidebar";
 export const metadata: Metadata = {
   title: "HPC Cluster - คู่มือการใช้งาน | มหาวิทยาลัยขอนแก่น",
   description:
-    "คู่มือการใช้งาน HPC (High-Performance Computing) Cluster มหาวิทยาลัยขอนแก่น เวอร์ชัน 1.1 Testbeta",
+    "คู่มือการใช้งาน HPC (High-Performance Computing) Cluster มหาวิทยาลัยขอนแก่น เวอร์ชัน 1.2 Test beta",
   keywords: "HPC, Cluster, KKU, Khon Kaen University, Slurm, GPU, Computing",
 };
 
