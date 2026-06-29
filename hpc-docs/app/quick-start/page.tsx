@@ -32,6 +32,12 @@ export default function QuickStartPage() {
             <span className="flex-shrink-0 w-7 h-7 rounded-full bg-[#003087] text-white text-sm font-bold flex items-center justify-center">2</span>
             <p className="text-slate-700 pt-0.5">ล็อคอินด้วย Username และ Password ของตนเอง</p>
           </div>
+
+          <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+          <p className="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wide">OOD Dashboard</p>
+          <ZoomableImage src="/images/image-2.1.png" alt="Open OnDemand Dashboard" width={900} height={500} className="w-full h-auto rounded-lg" />
+        </div>
+
           <div className="flex items-start gap-4 bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
             <span className="flex-shrink-0 w-7 h-7 rounded-full bg-[#003087] text-white text-sm font-bold flex items-center justify-center">3</span>
             <p className="text-slate-700 pt-0.5">
@@ -42,8 +48,12 @@ export default function QuickStartPage() {
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
-          <p className="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wide">OOD Dashboard</p>
-          <ZoomableImage src="/images/image-2.png" alt="Open OnDemand Dashboard" width={900} height={500} className="w-full h-auto rounded-lg" />
+          <ZoomableImage src="/images/image-2.2.png" alt="Open OnDemand Dashboard" width={900} height={500} className="w-full h-auto rounded-lg" />
+        </div>
+        
+        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+        <p className="text-xs text-slate-400 mb-3 font-medium uppercase tracking-wide">สามารถเข้าสู่ Terminal ผ่าน OOD ได้</p>  
+          <ZoomableImage src="/images/image-2.3.png" alt="Open OnDemand Dashboard" width={900} height={500} className="w-full h-auto rounded-lg" />
         </div>
 
         {/* Job steps */}

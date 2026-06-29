@@ -1,4 +1,4 @@
-import { Database, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
+import { Database, AlertTriangle, CheckCircle, Lock } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
 
 export default function ScratchPage() {
@@ -12,6 +12,19 @@ export default function ScratchPage() {
         <p className="text-slate-500 ml-12">พื้นที่จัดเก็บ I/O เร็ว SSD สำหรับงานที่กำลังรัน</p>
       </div>
 
+      {/* คำเตือนสำคัญ */}
+      <div className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-xl p-4">
+        <Lock size={18} className="text-red-600 flex-shrink-0 mt-0.5" />
+        <div>
+          <p className="font-bold text-red-800 text-sm">ไม่สามารถเข้าถึง /scratch โดยตรงได้จาก Login Node</p>
+          <p className="text-red-700 text-sm mt-1">
+            <code className="bg-red-100 px-1 rounded font-mono">/scratch</code> อยู่บน Compute Node เท่านั้น
+            ผู้ใช้ไม่สามารถ <code className="bg-red-100 px-1 rounded font-mono">cd /scratch</code> หรือ
+            เข้าถึงได้จาก Login Node — ต้องทำผ่าน Job Script เท่านั้น
+          </p>
+        </div>
+      </div>
+
       <section>
         <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
           <span className="text-[#003087]">6.</span> /scratch คืออะไร?
@@ -19,12 +32,12 @@ export default function ScratchPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {[
             { icon: <CheckCircle size={18} className="text-green-500" />, title: "เร็วกว่า /home", desc: "SSD ความเร็วสูง เหมาะสำหรับ I/O หนัก" },
-            { icon: <CheckCircle size={18} className="text-green-500" />, title: "พื้นที่ขนาดใหญ่", desc: "~6 TB ต่อ Compute Node" },
-            { icon: <AlertTriangle size={18} className="text-orange-500" />, title: "ข้อมูลชั่วคราว", desc: "ข้อมูลจะถูกลบหลังงานเสร็จสิ้น" },
-            { icon: <AlertTriangle size={18} className="text-orange-500" />, title: "ต้องบันทึกกลับ", desc: "ต้องคัดลอกผลลัพธ์กลับ /home ก่อนงานจบ" },
+            { icon: <CheckCircle size={18} className="text-green-500" />, title: "พื้นที่ ~6 TB/node", desc: "สำหรับไฟล์ชั่วคราวระหว่างงานรัน" },
+            { icon: <AlertTriangle size={18} className="text-orange-500" />, title: "ข้อมูลชั่วคราว", desc: "ข้อมูลถูกลบอัตโนมัติหลังงานจบ" },
+            { icon: <AlertTriangle size={18} className="text-orange-500" />, title: "ต้อง copy กลับ", desc: "copy ผลลัพธ์กลับ /home ก่อนงานจบ" },
           ].map((item, i) => (
             <div key={i} className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm flex items-start gap-3">
-              {item.icon}
+              <div className="flex-shrink-0 mt-0.5">{item.icon}</div>
               <div>
                 <div className="font-semibold text-slate-800 text-sm">{item.title}</div>
                 <div className="text-slate-600 text-sm mt-0.5">{item.desc}</div>
@@ -35,9 +48,9 @@ export default function ScratchPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-xl font-bold text-slate-800">วิธีใช้ /scratch ในสคริปต์งาน</h2>
+        <h2 className="text-xl font-bold text-slate-800">วิธีใช้ /scratch ใน Job Script</h2>
+        <p className="text-slate-600 text-sm">ต้องเข้าถึงผ่าน Job Script เท่านั้น Slurm จะจัดสรร path <code className="bg-slate-100 px-1 rounded font-mono">/scratch/$USER/$SLURM_JOB_ID</code> ให้โดยอัตโนมัติเมื่องานรันบน Compute Node</p>
         <CodeBlock title="scratch_job.sh" language="bash" code={`#!/bin/bash
-
 #SBATCH --job-name=scratch-job
 #SBATCH --output=/home/%u/scratch-%j.out
 #SBATCH --partition=cpu
@@ -45,7 +58,7 @@ export default function ScratchPage() {
 #SBATCH --mem=8G
 #SBATCH --time=02:00:00
 
-# สร้างโฟลเดอร์ส่วนตัวใน /scratch
+# สร้างโฟลเดอร์ส่วนตัวใน /scratch (ใช้ได้บน Compute Node เท่านั้น)
 SCRATCH_DIR=/scratch/$USER/$SLURM_JOB_ID
 mkdir -p $SCRATCH_DIR
 
@@ -68,7 +81,7 @@ rm -rf $SCRATCH_DIR`} />
           <AlertTriangle size={18} className="text-orange-600 flex-shrink-0 mt-0.5" />
           <div>
             <p className="font-semibold text-orange-800 text-sm">ข้อควรระวัง</p>
-            <p className="text-orange-700 text-sm mt-1">ต้องคัดลอกผลลัพธ์กลับ <code className="bg-orange-100 px-1 rounded">/home</code> ก่อนสคริปต์จบ มิฉะนั้นข้อมูลจะหายถาวร</p>
+            <p className="text-orange-700 text-sm mt-1">ต้อง copy ผลลัพธ์กลับ <code className="bg-orange-100 px-1 rounded font-mono">/home</code> ก่อน script จบทุกครั้ง ข้อมูลใน <code className="bg-orange-100 px-1 rounded font-mono">/scratch</code> จะหายถาวรเมื่องานสิ้นสุด</p>
           </div>
         </div>
       </section>

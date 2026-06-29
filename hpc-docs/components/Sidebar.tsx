@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -9,7 +10,6 @@ import {
   Terminal,
   Send,
   FileCode,
-  Settings,
   ChevronRight,
   ExternalLink,
   FileText,
@@ -68,12 +68,22 @@ const navGroups: NavGroup[] = [
         href: "/software",
         label: "Software & Environment",
         icon: Package,
-        description: "รายการซอฟต์แวร์และคู่มือ",
+        description: "รายการซอฟต์แวร์ที่ติดตั้ง",
         subtopics: [
-          { label: "รายการซอฟต์แวร์ที่ติดตั้ง", hash: "#installed" },
+          { label: "รายการซอฟต์แวร์ทั้งหมด", hash: "#installed" },
+        ],
+      },
+      {
+        href: "/software-guides",
+        label: "คู่มือการใช้งานซอฟต์แวร์",
+        icon: BookOpen,
+        description: "คู่มือแต่ละซอฟต์แวร์",
+        subtopics: [
           { label: "Miniconda: สร้าง Environment", hash: "#miniconda" },
-          { label: "Apptainer: ใช้งาน Container", hash: "#apptainer" },
-          { label: "Bioinformatics Tools (Dorado)", hash: "#bio-tools" },
+          { label: "Apptainer: Container บน HPC", hash: "#apptainer" },
+          { label: "Nextflow: Pipeline บน Slurm", hash: "#nextflow" },
+          { label: "Dorado: Nanopore Basecalling", hash: "#dorado" },
+          { label: "RStudio Server ผ่าน OOD", hash: "#rstudio" },
         ],
       },
     ],
@@ -83,13 +93,17 @@ const navGroups: NavGroup[] = [
     items: [
       {
         href: "/slurm-commands",
-        label: "คำสั่ง Slurm พื้นฐาน",
+        label: "คำสั่ง Slurm & จัดการงาน",
         icon: Terminal,
-        description: "คำสั่งที่จำเป็น",
+        description: "คำสั่งพื้นฐานและการจัดการงาน",
         subtopics: [
-          { label: "ตารางคำสั่งทั่วไป", hash: "#general" },
+          { label: "ตารางคำสั่งทั้งหมด", hash: "#general" },
           { label: "ตรวจสอบสถานะ Cluster", hash: "#job-state" },
-          { label: "ตรวจสอบสถานะงาน", hash: "#job-status" },
+          { label: "ตรวจสอบงานของคุณ", hash: "#job-status" },
+          { label: "ยกเลิกงาน", hash: "#scancel" },
+          { label: "ดูผลลัพธ์ขณะรัน", hash: "#sacct" },
+          { label: "ดูรายละเอียดงานที่เสร็จ", hash: "#scontrol" },
+          { label: "ตรวจสอบการใช้งานดิสก์", hash: "#disk-usage" },
         ],
       },
       {
@@ -109,18 +123,6 @@ const navGroups: NavGroup[] = [
           { label: "Nextflow Pipeline", hash: "#nextflow" },
           { label: "RStudio Server", hash: "#rstudio" },
           { label: "Dorado Basecalling", hash: "#dorado" },
-        ],
-      },
-      {
-        href: "/job-management",
-        label: "การจัดการงาน",
-        icon: Settings,
-        description: "จัดการ Jobs",
-        subtopics: [
-          { label: "คำสั่งยกเลิกงาน", hash: "#scancel" },
-          { label: "ดูผลลัพธ์งาน", hash: "#sacct" },
-          { label: "ดูรายละเอียดงาน", hash: "#scontrol" },
-          { label: "ตรวจสอบการใช้งานดิสก์", hash: "#disk-usage" },
         ],
       },
     ],
@@ -161,6 +163,11 @@ const navGroups: NavGroup[] = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -243,7 +250,7 @@ export function Sidebar() {
               <ul className="space-y-0.5">
                 {group.items.map((item) => {
                   const Icon = item.icon;
-                  const isActive = pathname === item.href;
+                  const isActive = mounted && pathname === item.href;
                   return (
                     <li key={item.href} className="space-y-0.5">
                       <Link

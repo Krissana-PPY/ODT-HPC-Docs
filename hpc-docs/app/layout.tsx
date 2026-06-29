@@ -16,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="th" className="scroll-smooth">
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">
+    <html lang="th" className="scroll-smooth" suppressHydrationWarning>
+      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased" suppressHydrationWarning>
         {/* Static Navbar - follows user when scrolling */}
         <Navbar />
 

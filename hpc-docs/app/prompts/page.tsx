@@ -13,7 +13,7 @@ export default function PromptsPage() {
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  const systemPrompt = `คุณคือผู้เชี่ยวชาญด้านระบบ HPC, Slurm, Bioinformatics และ Container/Workflow ที่จะช่วยฉันใช้งานระบบต่อไปนี้ได้อย่างถูกต้อง
+  const systemPrompt = `คุณคือผู้เชี่ยวชาญด้านระบบ HPC, Slurm และ Container/Workflow ที่จะช่วยฉันใช้งานระบบต่อไปนี้ได้อย่างถูกต้อง
 
 ข้อมูลระบบ HPC (ODT-HPC KKU):
 Compute Node: 2 เครื่อง แต่ละเครื่องมี CPU 64 cores, RAM 503 GB, GPU NVIDIA A40 1 ตัว
@@ -285,8 +285,14 @@ sacct บอกว่างานของฉันใช้ RAM จริงแ
           เมื่อเข้าใจระบบแล้วของ HPC แล้วคุณสามารถเลือก Copy และปรับแต่ง Prompt ด้านล่างนี้ เพื่อทำคำต้องการเฉพาะทางของคุณได้ทันที:
         </p>
 
+        {/* หมวดงานทั่วไป */}
+        <div className="flex items-center gap-3 mt-2">
+          <span className="bg-[#C2612B] text-white text-[11px] font-bold px-3 py-1 rounded-full">งานทั่วไป</span>
+          <div className="flex-1 h-px bg-orange-100"></div>
+          <span className="text-xs text-slate-400">กลุ่มที่ 1–6</span>
+        </div>
         <div className="grid grid-cols-1 gap-6">
-          {promptCategories.map((item, index) => {
+          {promptCategories.slice(0, 6).map((item) => {
             const IconComponent = item.icon;
             return (
               <div key={item.id} className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden hover:border-orange-200 transition-all">
@@ -307,6 +313,55 @@ sacct บอกว่างานของฉันใช้ RAM จริงแ
                     <button
                       onClick={() => handleCopy(item.prompt, item.id)}
                       className="flex items-center gap-1.5 bg-[#C2612B] hover:bg-orange-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-all shadow-sm hover:shadow-md"
+                    >
+                      {copiedIndex === item.id ? (
+                        <>
+                          <Check size={14} />
+                          <span>คัดลอกสำเร็จ!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={14} />
+                          <span>คัดลอก Prompt หมวดนี้</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* หมวดซอฟต์แวร์เฉพาะ */}
+        <div className="flex items-center gap-3 mt-4">
+          <span className="bg-[#003087] text-white text-[11px] font-bold px-3 py-1 rounded-full">ซอฟต์แวร์เฉพาะ</span>
+          <div className="flex-1 h-px bg-blue-100"></div>
+          <span className="text-xs text-slate-400">กลุ่มที่ 7–10</span>
+        </div>
+        <p className="text-slate-500 text-xs">Prompt สำหรับซอฟต์แวร์เฉพาะทาง — Dorado, Conda, Apptainer, Nextflow</p>
+        <div className="grid grid-cols-1 gap-6">
+          {promptCategories.slice(6).map((item) => {
+            const IconComponent = item.icon;
+            return (
+              <div key={item.id} className="bg-white rounded-2xl border border-blue-100 shadow-sm overflow-hidden hover:border-blue-300 transition-all">
+                <div className="px-5 py-4 border-b border-blue-50 bg-blue-50/30 flex items-start gap-3">
+                  <div className={`rounded-xl p-2 mt-0.5 border ${item.color}`}>
+                    <IconComponent size={18} />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-sm sm:text-base">{item.title}</h3>
+                    <p className="text-slate-500 text-xs sm:text-sm mt-0.5 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+                <div className="p-5 space-y-3">
+                  <div className="relative bg-slate-50 rounded-xl border border-slate-200 p-4 font-mono text-slate-700 text-sm leading-relaxed whitespace-pre-wrap select-all">
+                    {item.prompt}
+                  </div>
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() => handleCopy(item.prompt, item.id)}
+                      className="flex items-center gap-1.5 bg-[#003087] hover:bg-blue-900 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-all shadow-sm hover:shadow-md"
                     >
                       {copiedIndex === item.id ? (
                         <>
