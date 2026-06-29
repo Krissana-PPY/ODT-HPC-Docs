@@ -182,15 +182,39 @@ python3 analysis.py`} />
           <Box size={18} className="text-indigo-600" />
           <span className="text-[#003087]">5.7</span> งาน Apptainer Container
         </h2>
-        <p className="text-slate-600 text-sm">รัน container ด้วย Apptainer บน Compute Node รองรับทั้ง CPU และ GPU</p>
+        <p className="text-slate-600 text-sm">
+          <code className="bg-slate-100 px-1 rounded font-mono">apptainer exec</code> และ <code className="bg-slate-100 px-1 rounded font-mono">apptainer shell</code> รันบน Login Node ได้สำหรับทดสอบเบาๆ เช่น ตรวจสอบ version — แต่งานคำนวณจริงต้องส่งผ่าน Slurm เท่านั้น
+        </p>
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-3">
+          <Box size={15} className="text-amber-600 flex-shrink-0 mt-0.5" />
+          <p className="text-amber-700 text-sm">
+            <code className="bg-amber-100 px-1 rounded font-mono">--nv</code> ส่ง NVIDIA GPU เข้า container — ต้องรันบน Compute Node ที่มี GPU ผ่าน Slurm เท่านั้น ถ้ารันบน Login Node จะเกิด error เนื่องจากไม่มี GPU
+          </p>
+        </div>
         <div className="alert-info flex items-start gap-3">
           <Database size={15} className="text-blue-600 flex-shrink-0 mt-0.5" />
           <p className="text-blue-700 text-sm">
-            แนะนำให้ copy ข้อมูล input ไปยัง <code className="bg-blue-100 px-1 rounded font-mono">/scratch/$SLURM_JOB_ID</code> ก่อนรัน container เพราะ /scratch เป็น SSD บน Compute Node อ่าน/เขียนเร็วกว่า /home — อย่าลืม copy ผลลัพธ์กลับ /home ก่อน script จบ เพราะข้อมูลใน /scratch จะถูกลบเมื่องานสิ้นสุด
+            แนะนำให้ copy ข้อมูล input ไปยัง <code className="bg-blue-100 px-1 rounded font-mono">/scratch/$USER/$SLURM_JOB_ID</code> ก่อนรัน container เพราะ /scratch เป็น SSD local บน Compute Node อ่าน/เขียนเร็วกว่า /home และไม่ shared ข้าม node — อย่าลืม copy ผลลัพธ์กลับ /home ก่อน script จบ เพราะข้อมูลใน /scratch จะถูกลบเมื่องานสิ้นสุด
           </p>
         </div>
-        <CodeBlock title="apptainer_job.sh" language="bash" code={`#!/bin/bash
-#SBATCH --job-name=apptainer-job
+        <CodeBlock title="apptainer_cpu.sh" language="bash" code={`#!/bin/bash
+#SBATCH --job-name=apptainer-cpu
+#SBATCH --partition=cpu
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32G
+#SBATCH --time=04:00:00
+#SBATCH --output=%x_%j.out
+
+IMAGE="$HOME/containers/ubuntu_22.04.sif"
+INPUT="$HOME/data"
+OUTPUT="$HOME/results"
+
+apptainer exec \\
+  --bind \${INPUT}:/data,\${OUTPUT}:/output \\
+  \${IMAGE} \\
+  python3 /data/script.py`} />
+        <CodeBlock title="apptainer_gpu.sh" language="bash" code={`#!/bin/bash
+#SBATCH --job-name=apptainer-gpu
 #SBATCH --partition=gpu
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
@@ -202,7 +226,7 @@ IMAGE="$HOME/containers/pytorch_2.2.sif"
 INPUT="$HOME/data"
 OUTPUT="$HOME/results"
 
-# รัน container พร้อม GPU
+# --nv = ส่ง GPU เข้า container (ใช้ได้บน Compute Node เท่านั้น)
 apptainer exec --nv \\
   --bind \${INPUT}:/data,\${OUTPUT}:/output \\
   \${IMAGE} \\
@@ -249,18 +273,43 @@ withLabel: gpu {
         </h2>
         <p className="text-slate-600 text-sm">เข้าใช้ RStudio Server ผ่าน Open OnDemand โดยไม่ต้อง SSH</p>
         <div className="space-y-3">
-          {[
-            "เปิด https://odt-hpc.kku.ac.th แล้ว login",
-            "เลือก Interactive Apps → RStudio Server",
-            "กำหนดทรัพยากร: Partition, CPU, RAM, เวลา",
-            "กด Launch แล้วรอ session พร้อม",
-            "กด Connect to RStudio Server",
-          ].map((s, i) => (
-            <div key={i} className="flex items-center gap-3 bg-blue-50 rounded-lg px-4 py-2.5">
-              <span className="w-6 h-6 rounded-full bg-[#003087] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">{i+1}</span>
-              <span className="text-slate-700 text-sm">{s}</span>
-            </div>
-          ))}
+          <div className="flex items-center gap-3 bg-blue-50 rounded-lg px-4 py-2.5">
+            <span className="w-6 h-6 rounded-full bg-[#003087] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span className="text-slate-700 text-sm">
+              เข้าสู่ OOD ผ่าน{" "}
+              <a href="https://odt-hpc.kku.ac.th" target="_blank" rel="noopener noreferrer"
+                className="text-[#003087] font-semibold underline hover:text-[#F5A623] transition-colors">
+                odt-hpc.kku.ac.th
+              </a>{" "}
+              แล้ว login ด้วย username/password
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 bg-blue-50 rounded-lg px-4 py-2.5">
+            <span className="w-6 h-6 rounded-full bg-[#003087] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span className="text-slate-700 text-sm">เลือก <strong>Interactive Apps</strong> → <strong>RStudio Server</strong></span>
+          </div>
+          <div className="rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+            <img src="/images/image-2.1.png" alt="เลือก Interactive Apps → RStudio Server" className="w-full h-auto" />
+          </div>
+
+          <div className="flex items-center gap-3 bg-blue-50 rounded-lg px-4 py-2.5">
+            <span className="w-6 h-6 rounded-full bg-[#003087] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span className="text-slate-700 text-sm">กำหนดทรัพยากร: Partition, CPU, RAM, เวลาที่ต้องการ</span>
+          </div>
+          <div className="rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+            <img src="/images/image-19.png" alt="กำหนดทรัพยากร RStudio Session" className="w-full h-auto" />
+          </div>
+
+          <div className="flex items-center gap-3 bg-blue-50 rounded-lg px-4 py-2.5">
+            <span className="w-6 h-6 rounded-full bg-[#003087] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">4</span>
+            <span className="text-slate-700 text-sm">กด <strong>Launch</strong> แล้วรอ session พร้อมใช้งาน</span>
+          </div>
+
+          <div className="flex items-center gap-3 bg-blue-50 rounded-lg px-4 py-2.5">
+            <span className="w-6 h-6 rounded-full bg-[#003087] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">5</span>
+            <span className="text-slate-700 text-sm">กด <strong>Connect to RStudio Server</strong></span>
+          </div>
         </div>
         <CodeBlock title="rstudio_batch.sh (กรณีต้องการรัน R script แบบ batch)" language="bash" code={`#!/bin/bash
 #SBATCH --job-name=r-analysis

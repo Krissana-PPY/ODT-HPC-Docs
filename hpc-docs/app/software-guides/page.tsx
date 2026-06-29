@@ -83,8 +83,8 @@ python3 my_analysis.py`} />
         </p>
 
         <div className="space-y-3">
-          <h3 className="font-semibold text-slate-700 text-sm">ดึง container จาก Docker Hub</h3>
-          <CodeBlock language="bash" code={`# ดึง container มาเป็นไฟล์ .sif (ทำบน Login Node ได้)
+          <h3 className="font-semibold text-slate-700 text-sm">ดึง container จาก Docker Hub (ทำบน Login Node ได้)</h3>
+          <CodeBlock language="bash" code={`# ดึง container มาเป็นไฟล์ .sif — ทำบน Login Node ได้
 apptainer pull docker://ubuntu:22.04
 apptainer pull docker://python:3.11-slim
 
@@ -93,21 +93,62 @@ apptainer pull docker://biocontainers/samtools:v1.9-4-deb_cv1`} />
         </div>
 
         <div className="space-y-3">
-          <h3 className="font-semibold text-slate-700 text-sm">รันคำสั่งใน container</h3>
-          <CodeBlock language="bash" code={`# รันคำสั่งเดียวใน container
+          <h3 className="font-semibold text-slate-700 text-sm">ทดสอบ container บน Login Node</h3>
+          <p className="text-slate-500 text-xs">ใช้สำหรับตรวจสอบ version หรือทดสอบคำสั่งเบาๆ เท่านั้น ห้ามรันงานคำนวณหนักบน Login Node เพราะใช้ทรัพยากรร่วมกันทุกคน</p>
+          <CodeBlock language="bash" code={`# ตรวจสอบ version / ทดสอบเบาๆ บน Login Node ได้
 apptainer exec ubuntu_22.04.sif python3 --version
 
-# เข้า shell ของ container
-apptainer shell ubuntu_22.04.sif
-
-# bind mount directory จาก host เข้า container
-apptainer exec --bind /home/$USER:/data ubuntu_22.04.sif bash`} />
+# เข้า shell ของ container เพื่อสำรวจ
+apptainer shell ubuntu_22.04.sif`} />
         </div>
 
         <div className="space-y-3">
-          <h3 className="font-semibold text-slate-700 text-sm">รัน container ด้วย GPU (--nv flag)</h3>
-          <CodeBlock language="bash" code={`# ต้องเพิ่ม --nv เพื่อใช้ NVIDIA GPU ใน container
-apptainer exec --nv pytorch_2.2.sif python3 train.py`} />
+          <h3 className="font-semibold text-slate-700 text-sm">รัน container จริงผ่าน Slurm — CPU (Batch Job)</h3>
+          <p className="text-slate-500 text-xs">งานคำนวณทุกประเภทต้องส่งผ่าน Slurm เท่านั้น ไม่รันโดยตรงบน Login Node</p>
+          <CodeBlock title="apptainer_cpu.sh" language="bash" code={`#!/bin/bash
+#SBATCH --job-name=apptainer-cpu
+#SBATCH --partition=cpu
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32G
+#SBATCH --time=04:00:00
+#SBATCH --output=%x_%j.out
+
+IMAGE="$HOME/containers/ubuntu_22.04.sif"
+INPUT="$HOME/data"
+OUTPUT="$HOME/results"
+
+apptainer exec \\
+  --bind \${INPUT}:/data,\${OUTPUT}:/output \\
+  \${IMAGE} \\
+  python3 /data/script.py`} />
+        </div>
+
+        <div className="space-y-3">
+          <h3 className="font-semibold text-slate-700 text-sm">รัน container ด้วย GPU (--nv flag) — ต้องผ่าน Slurm เท่านั้น</h3>
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-3">
+            <Box size={15} className="text-amber-600 flex-shrink-0 mt-0.5" />
+            <p className="text-amber-700 text-sm">
+              <code className="bg-amber-100 px-1 rounded font-mono">--nv</code> ส่ง NVIDIA GPU เข้า container — ต้องรันบน Compute Node ที่มี GPU ผ่าน Slurm เท่านั้น ถ้ารันบน Login Node จะเกิด error เนื่องจากไม่มี GPU
+            </p>
+          </div>
+          <CodeBlock title="apptainer_gpu.sh" language="bash" code={`#!/bin/bash
+#SBATCH --job-name=apptainer-gpu
+#SBATCH --partition=gpu
+#SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=32G
+#SBATCH --time=08:00:00
+#SBATCH --output=%x_%j.out
+
+IMAGE="$HOME/containers/pytorch_2.2.sif"
+INPUT="$HOME/data"
+OUTPUT="$HOME/results"
+
+# --nv = ส่ง GPU เข้า container
+apptainer exec --nv \\
+  --bind \${INPUT}:/data,\${OUTPUT}:/output \\
+  \${IMAGE} \\
+  python3 /app/train.py`} />
         </div>
       </section>
 
