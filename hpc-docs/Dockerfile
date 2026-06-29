@@ -4,7 +4,7 @@ FROM node:20.19.2-alpine3.21 AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 COPY . .
 RUN npm run build
