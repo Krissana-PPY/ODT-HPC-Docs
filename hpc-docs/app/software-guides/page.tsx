@@ -22,7 +22,7 @@ export default function SoftwareGuidesPage() {
         </h2>
         <p className="text-slate-600 text-sm">
           Miniconda ช่วยให้ผู้ใช้แต่ละคนสร้าง Python/R environment ของตนเองได้โดยไม่ต้องรอผู้ดูแลระบบ
-          Environment จะถูกเก็บใน <code className="bg-slate-100 px-1 rounded font-mono">$HOME/miniconda3/envs/</code> (นับรวมใน quota 300 GB)
+          Environment จะถูกเก็บใน <code className="bg-slate-100 px-1 rounded font-mono">$HOME/.conda/envs/</code> (นับรวมใน quota 300 GB)
         </p>
 
         <div className="space-y-3">
@@ -54,8 +54,8 @@ conda deactivate`} />
 #SBATCH --time=02:00:00
 #SBATCH --output=%x_%j.out
 
-# ต้องมีบรรทัดนี้เสมอ ก่อน conda activate
-source $HOME/miniconda3/etc/profile.d/conda.sh
+# ต้องมีบรรทัดนี้เสมอ ก่อน conda activate (Miniconda ติดตั้งที่ /opt/conda)
+source /opt/conda/etc/profile.d/conda.sh
 conda activate myenv
 
 python3 my_analysis.py`} />
@@ -64,7 +64,7 @@ python3 my_analysis.py`} />
         <div className="alert-info flex items-start gap-3">
           <FlaskConical size={16} className="text-blue-600 flex-shrink-0 mt-0.5" />
           <p className="text-blue-700 text-sm">
-            Environment ถูกเก็บใน <code className="bg-blue-100 px-1 rounded font-mono">$HOME/miniconda3/envs/</code> ซึ่งนับรวมเป็น quota ของ /home (300 GB) ควรลบ environment ที่ไม่ใช้แล้วออกเพื่อประหยัดพื้นที่
+            Environment ถูกเก็บใน <code className="bg-blue-100 px-1 rounded font-mono">$HOME/.conda/envs/</code> ซึ่งนับรวมเป็น quota ของ /home (300 GB) ควรลบ environment ที่ไม่ใช้แล้วออกเพื่อประหยัดพื้นที่
           </p>
         </div>
       </section>
@@ -156,10 +156,11 @@ withLabel: gpu {
 #SBATCH --output=%x_%j.out
 
 # Nextflow head job จะส่ง sub-job เข้า Slurm เองอัตโนมัติ
+# ใช้ slurm,singularity เมื่อ pipeline ต้องการ container (nf-core, EPI2ME)
 nextflow run nf-core/rnaseq \\
   --input samplesheet.csv \\
   --outdir $HOME/results/ \\
-  -profile slurm \\
+  -profile slurm,singularity \\
   -resume`} />
         </div>
       </section>

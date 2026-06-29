@@ -108,8 +108,8 @@ echo 'เสร็จสิ้นทุกขั้นตอน!'`} />
 #SBATCH --time=06:00:00
 #SBATCH --output=%x_%j.out
 
-# โหลด conda ก่อนเสมอ
-source $HOME/miniconda3/etc/profile.d/conda.sh
+# โหลด conda ก่อนเสมอ (Miniconda ติดตั้งที่ /opt/conda)
+source /opt/conda/etc/profile.d/conda.sh
 conda activate myenv
 
 echo "Python: $(python --version)"
@@ -169,10 +169,11 @@ rm -rf \${SCRATCH}`} />
 #SBATCH --output=%x_%j.out
 
 # Nextflow head job จะส่ง sub-job เข้า Slurm เองอัตโนมัติ
+# slurm,singularity = ใช้เมื่อ pipeline ต้องการ container (nf-core, EPI2ME)
 nextflow run nf-core/rnaseq \\
   --input samplesheet.csv \\
   --outdir $HOME/results/rnaseq \\
-  -profile slurm \\
+  -profile slurm,singularity \\
   -resume`} />
         <CodeBlock title="nextflow.config" language="bash" code={`process {
   executor     = 'slurm'

@@ -27,7 +27,7 @@ Partitions ที่มี:
 - short (max 1 ชม.) สำหรับทดสอบและ debug
 
 ซอฟต์แวร์ที่ติดตั้งในระบบ:
-- Python 3.9.25, Miniconda (conda 26.3.2) — สร้าง env ได้ที่ $HOME/miniconda3/envs/
+- Python 3.9.25, Miniconda (conda 26.3.2) — ติดตั้งที่ /opt/conda, สร้าง env ได้ที่ $HOME/.conda/envs/
 - RStudio Server 2026.04.0 — เข้าใช้ผ่าน Open OnDemand (OOD)
 - Apptainer 1.5.1 — container runtime รองรับ Docker images และ GPU (--nv flag)
 - Nextflow 26.04.4 — workflow manager รองรับ Slurm executor โดยตรง
@@ -40,7 +40,7 @@ Partitions ที่มี:
 2. ผลลัพธ์สำคัญต้องเซฟที่ /home เท่านั้น ข้อมูลใน /scratch จะหายหลังงานจบ
 3. output ไฟล์แนะนำที่ /home/%u/job-%j.out และ /home/%u/job-%j.err
 4. ใช้ /scratch/$SLURM_JOB_ID/ สำหรับไฟล์ชั่วคราว แล้ว copy ผลลัพธ์กลับ /home ก่อนจบ
-5. Conda: ต้องมี "source $HOME/miniconda3/etc/profile.d/conda.sh" ก่อน activate ใน script
+5. Conda: ต้องมี "source /opt/conda/etc/profile.d/conda.sh" ก่อน activate ใน script (Miniconda ติดตั้งที่ /opt/conda ไม่ใช่ $HOME)
 6. Apptainer GPU: ต้องเพิ่ม --nv flag เพื่อส่ง GPU เข้า container
 
 สิ่งที่ฉันต้องการจากคุณ:

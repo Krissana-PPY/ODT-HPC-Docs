@@ -169,8 +169,8 @@ python3 process.py --input data_\${SLURM_ARRAY_TASK_ID}.csv`} />
 #SBATCH --time=04:00:00
 #SBATCH --output=%x_%j.out
 
-# เปิดใช้งาน conda
-source $HOME/miniconda3/etc/profile.d/conda.sh
+# เปิดใช้งาน conda (Miniconda ติดตั้งที่ /opt/conda)
+source /opt/conda/etc/profile.d/conda.sh
 conda activate myenv
 
 python3 analysis.py`} />
@@ -183,6 +183,12 @@ python3 analysis.py`} />
           <span className="text-[#003087]">5.7</span> งาน Apptainer Container
         </h2>
         <p className="text-slate-600 text-sm">รัน container ด้วย Apptainer บน Compute Node รองรับทั้ง CPU และ GPU</p>
+        <div className="alert-info flex items-start gap-3">
+          <Database size={15} className="text-blue-600 flex-shrink-0 mt-0.5" />
+          <p className="text-blue-700 text-sm">
+            แนะนำให้ copy ข้อมูล input ไปยัง <code className="bg-blue-100 px-1 rounded font-mono">/scratch/$SLURM_JOB_ID</code> ก่อนรัน container เพราะ /scratch เป็น SSD บน Compute Node อ่าน/เขียนเร็วกว่า /home — อย่าลืม copy ผลลัพธ์กลับ /home ก่อน script จบ เพราะข้อมูลใน /scratch จะถูกลบเมื่องานสิ้นสุด
+          </p>
+        </div>
         <CodeBlock title="apptainer_job.sh" language="bash" code={`#!/bin/bash
 #SBATCH --job-name=apptainer-job
 #SBATCH --partition=gpu
@@ -219,7 +225,8 @@ apptainer exec --nv \\
 #SBATCH --output=%x_%j.out
 
 # nextflow.config ต้องกำหนด executor = 'slurm'
-nextflow run my_pipeline.nf -profile slurm`} />
+# เพิ่ม ,singularity ถ้า pipeline ใช้ container (nf-core, EPI2ME)
+nextflow run my_pipeline.nf -profile slurm,singularity`} />
         <CodeBlock title="nextflow.config (ตัวอย่าง)" language="bash" code={`process {
   executor = 'slurm'
   queue    = 'cpu'
