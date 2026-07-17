@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
-import { Navbar } from "@/components/Navbar";
-import { Sidebar } from "@/components/Sidebar";
+import { LayoutClient } from "@/components/LayoutClient";
 
 export const metadata: Metadata = {
   title: "HPC Cluster - คู่มือการใช้งาน | มหาวิทยาลัยขอนแก่น",
   description:
-    "คู่มือการใช้งาน HPC (High-Performance Computing) Cluster มหาวิทยาลัยขอนแก่น เวอร์ชัน 1.2 Test beta",
+    "คู่มือการใช้งาน HPC (High-Performance Computing) Cluster มหาวิทยาลัยขอนแก่น เวอร์ชัน 1.3 Test beta",
   keywords: "HPC, Cluster, KKU, Khon Kaen University, Slurm, GPU, Computing",
 };
 
@@ -18,20 +17,7 @@ export default function RootLayout({
   return (
     <html lang="th" className="scroll-smooth" suppressHydrationWarning>
       <body className="min-h-screen bg-slate-50 text-slate-900 antialiased" suppressHydrationWarning>
-        {/* Static Navbar - follows user when scrolling */}
-        <Navbar />
-
-        <div className="flex pt-16">
-          {/* Static Sidebar */}
-          <Sidebar />
-
-          {/* Main content area */}
-          <main className="flex-1 ml-0 lg:ml-72 min-h-[calc(100vh-4rem)]">
-            <div className="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-              {children}
-            </div>
-          </main>
-        </div>
+        <LayoutClient>{children}</LayoutClient>
       </body>
     </html>
   );

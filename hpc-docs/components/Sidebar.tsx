@@ -15,6 +15,8 @@ import {
   FileText,
   HardDrive,
   MessageSquare,
+  Server,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -161,7 +163,156 @@ const navGroups: NavGroup[] = [
   },
 ];
 
-export function Sidebar() {
+interface SidebarContentProps {
+  pathname: string;
+  mounted: boolean;
+  onLinkClick?: () => void;
+}
+
+function SidebarContent({ pathname, mounted, onLinkClick }: SidebarContentProps) {
+  return (
+    <>
+      {/* Quick links */}
+      <div className="p-4 border-b border-slate-100 bg-gradient-to-b from-yellow-50/50 to-white space-y-4">
+        <div>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
+            ลิงก์ขอบริการ (Request HPC)
+          </p>
+          <div className="space-y-2">
+            <a
+              href="https://kku.world/4rql5x"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onLinkClick}
+              className="flex items-center gap-2 bg-[#C2612B] hover:bg-orange-700 text-white rounded-xl px-3 py-2 transition-all duration-150 group shadow-sm"
+            >
+              <FileText size={14} className="flex-shrink-0 text-yellow-300" />
+              <div className="flex-1 min-w-0">
+                <div className="font-bold text-xs leading-none text-white">ขอใช้บริการ HPC Server</div>
+              </div>
+              <ExternalLink size={10} className="flex-shrink-0 opacity-60 group-hover:opacity-100 text-white" />
+            </a>
+            <a
+              href="https://kku.world/sbqzt4"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onLinkClick}
+              className="flex items-center gap-2 bg-[#C2612B] hover:bg-orange-700 text-white rounded-xl px-3 py-2 transition-all duration-150 group shadow-sm"
+            >
+              <HardDrive size={14} className="flex-shrink-0 text-yellow-300" />
+              <div className="flex-1 min-w-0">
+                <div className="font-bold text-xs leading-none text-white">ขอเพิ่มพื้นที่ / โปรแกรม</div>
+              </div>
+              <ExternalLink size={10} className="flex-shrink-0 opacity-60 group-hover:opacity-100 text-white" />
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">
+            เข้าใช้งานระบบ (Portals & SSH)
+          </p>
+          <div className="space-y-2">
+            <a href="https://odt-hpc.kku.ac.th" target="_blank" rel="noopener noreferrer" onClick={onLinkClick}
+              className="flex items-center gap-2 bg-yellow-50/50 hover:bg-yellow-50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 transition-all duration-150 group">
+              <ExternalLink size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
+              <div className="flex-1 min-w-0">
+                <div className="font-bold text-xs leading-none text-slate-800">Open OnDemand (OOD)</div>
+                <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">odt-hpc.kku.ac.th</div>
+              </div>
+            </a>
+            <a href="https://odt-hpc.kku.ac.th/jupyter" target="_blank" rel="noopener noreferrer" onClick={onLinkClick}
+              className="flex items-center gap-2 bg-yellow-50/50 hover:bg-yellow-50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 transition-all duration-150 group">
+              <BookOpen size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
+              <div className="flex-1 min-w-0">
+                <div className="font-bold text-xs leading-none text-slate-800">OOD JupyterHub</div>
+                <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">odt-hpc.kku.ac.th/jupyter</div>
+              </div>
+            </a>
+            <div className="flex items-center gap-2 bg-yellow-50/50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5">
+              <Terminal size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
+              <div className="flex-1 min-w-0">
+                <div className="font-bold text-xs leading-none text-slate-800">SSH: Connect Server</div>
+                <div className="text-[#C2612B] font-mono text-[9.5px] truncate leading-none mt-1 select-all font-bold">odt-hpc-cn.kku.ac.th</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation with groups */}
+      <nav className="flex-1 p-3 space-y-3">
+        {navGroups.map((group) => (
+          <div key={group.groupLabel}>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-1.5">
+              {group.groupLabel}
+            </p>
+            <ul className="space-y-0.5">
+              {group.items.map((item) => {
+                const Icon = item.icon;
+                const isActive = mounted && pathname === item.href;
+                return (
+                  <li key={item.href} className="space-y-0.5">
+                    <Link
+                      href={item.href}
+                      onClick={onLinkClick}
+                      className={cn(
+                        "flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs sm:text-sm transition-all duration-150 group",
+                        isActive
+                          ? "bg-yellow-50 text-slate-900 font-bold border-l-2 border-[#F5A623]"
+                          : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                      )}
+                    >
+                      <Icon
+                        size={15}
+                        className={cn(
+                          "flex-shrink-0",
+                          isActive ? "text-[#F5A623]" : "text-slate-400 group-hover:text-slate-600"
+                        )}
+                      />
+                      <span className="flex-1 truncate">{item.label}</span>
+                      {isActive && <ChevronRight size={13} className="text-[#F5A623] flex-shrink-0" />}
+                    </Link>
+                    {isActive && item.subtopics && item.subtopics.length > 0 && (
+                      <ul className="pl-8 pr-2 py-1 space-y-1.5 border-l border-yellow-200 ml-5 animate-fade-in-up">
+                        {item.subtopics.map((sub, sidx) => (
+                          <li key={sidx}>
+                            <Link
+                              href={`${item.href === "/" ? "" : item.href}${sub.hash}`}
+                              onClick={onLinkClick}
+                              className="block text-[11.5px] text-slate-500 hover:text-yellow-700 hover:font-semibold hover:underline transition-colors py-0.5 truncate"
+                            >
+                              • {sub.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </nav>
+
+      {/* Footer */}
+      <div className="p-4 border-t border-slate-100">
+        <div className="text-xs text-slate-400 text-center">
+          <div className="font-semibold text-slate-500">ODT-HPC · KKU v1.3 Test beta</div>
+          <div>มิถุนายน 2569</div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+interface SidebarProps {
+  mobileOpen: boolean;
+  setMobileOpen: (open: boolean) => void;
+}
+
+export function Sidebar({ mobileOpen, setMobileOpen }: SidebarProps) {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
@@ -169,138 +320,54 @@ export function Sidebar() {
     setMounted(true);
   }, []);
 
+  // Auto-close drawer on navigation
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname, setMobileOpen]);
+
   return (
     <>
       {/* Desktop Sidebar - Fixed */}
       <aside className="hidden lg:flex flex-col fixed left-0 top-16 bottom-0 w-72 bg-white border-r border-slate-200 z-40 overflow-y-auto select-none">
+        <SidebarContent pathname={pathname} mounted={mounted} />
+      </aside>
 
-        {/* Quick links */}
-        <div className="p-4 border-b border-slate-100 bg-gradient-to-b from-yellow-50/50 to-white space-y-4">
-          <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-              ลิงก์ขอบริการ (Request HPC)
-            </p>
-            <div className="space-y-2">
-              <a
-                href="https://kku.world/4rql5x"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-[#C2612B] hover:bg-orange-700 text-white rounded-xl px-3 py-2 transition-all duration-150 group shadow-sm"
-              >
-                <FileText size={14} className="flex-shrink-0 text-yellow-300" />
-                <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs leading-none text-white">ขอใช้บริการ HPC Server</div>
-                </div>
-                <ExternalLink size={10} className="flex-shrink-0 opacity-60 group-hover:opacity-100 text-white" />
-              </a>
-              <a
-                href="https://kku.world/sbqzt4"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-[#C2612B] hover:bg-orange-700 text-white rounded-xl px-3 py-2 transition-all duration-150 group shadow-sm"
-              >
-                <HardDrive size={14} className="flex-shrink-0 text-yellow-300" />
-                <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs leading-none text-white">ขอเพิ่มพื้นที่ / โปรแกรม</div>
-                </div>
-                <ExternalLink size={10} className="flex-shrink-0 opacity-60 group-hover:opacity-100 text-white" />
-              </a>
-            </div>
-          </div>
+      {/* Mobile Backdrop */}
+      <div
+        className={cn(
+          "lg:hidden fixed inset-0 bg-black/50 z-40 transition-opacity duration-300",
+          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+        onClick={() => setMobileOpen(false)}
+      />
 
-          <div>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">
-              เข้าใช้งานระบบ (Portals & SSH)
-            </p>
-            <div className="space-y-2">
-              <a href="https://odt-hpc.kku.ac.th" target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-yellow-50/50 hover:bg-yellow-50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 transition-all duration-150 group">
-                <ExternalLink size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
-                <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs leading-none text-slate-800">Open OnDemand (OOD)</div>
-                  <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">odt-hpc.kku.ac.th</div>
-                </div>
-              </a>
-              <a href="https://odt-hpc.kku.ac.th/jupyter" target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-yellow-50/50 hover:bg-yellow-50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5 transition-all duration-150 group">
-                <BookOpen size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
-                <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs leading-none text-slate-800">OOD JupyterHub</div>
-                  <div className="text-[#C2612B] text-[10px] truncate leading-none mt-1 font-mono font-bold">odt-hpc.kku.ac.th/jupyter</div>
-                </div>
-              </a>
-              <div className="flex items-center gap-2 bg-yellow-50/50 text-slate-800 border border-yellow-200 rounded-xl px-3 py-1.5">
-                <Terminal size={13} className="text-[#F5A623] flex-shrink-0 font-bold" />
-                <div className="flex-1 min-w-0">
-                  <div className="font-bold text-xs leading-none text-slate-800">SSH: Connect Server</div>
-                  <div className="text-[#C2612B] font-mono text-[9.5px] truncate leading-none mt-1 select-all font-bold">odt-hpc-cn.kku.ac.th</div>
-                </div>
-              </div>
-            </div>
+      {/* Mobile Drawer */}
+      <aside
+        className={cn(
+          "lg:hidden fixed left-0 top-0 bottom-0 w-72 max-w-[85vw] bg-white z-50 flex flex-col overflow-y-auto shadow-2xl select-none transition-transform duration-300 ease-in-out",
+          mobileOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        {/* Drawer Header */}
+        <div className="flex items-center justify-between px-4 h-16 border-b bg-gradient-to-r from-[#C2612B] to-[#F5A623] flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <Server size={16} className="text-yellow-300" />
+            <span className="text-white font-bold text-sm">HPC Cluster Docs</span>
           </div>
+          <button
+            onClick={() => setMobileOpen(false)}
+            className="text-white/80 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+            aria-label="Close menu"
+          >
+            <X size={20} />
+          </button>
         </div>
 
-        {/* Navigation with groups */}
-        <nav className="flex-1 p-3 space-y-3">
-          {navGroups.map((group) => (
-            <div key={group.groupLabel}>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-3 py-1.5">
-                {group.groupLabel}
-              </p>
-              <ul className="space-y-0.5">
-                {group.items.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = mounted && pathname === item.href;
-                  return (
-                    <li key={item.href} className="space-y-0.5">
-                      <Link
-                        href={item.href}
-                        className={cn(
-                          "flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-xs sm:text-sm transition-all duration-150 group",
-                          isActive
-                            ? "bg-yellow-50 text-slate-900 font-bold border-l-2 border-[#F5A623]"
-                            : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                        )}
-                      >
-                        <Icon
-                          size={15}
-                          className={cn(
-                            "flex-shrink-0",
-                            isActive ? "text-[#F5A623]" : "text-slate-400 group-hover:text-slate-600"
-                          )}
-                        />
-                        <span className="flex-1 truncate">{item.label}</span>
-                        {isActive && <ChevronRight size={13} className="text-[#F5A623] flex-shrink-0" />}
-                      </Link>
-                      {isActive && item.subtopics && item.subtopics.length > 0 && (
-                        <ul className="pl-8 pr-2 py-1 space-y-1.5 border-l border-yellow-200 ml-5 animate-fade-in-up">
-                          {item.subtopics.map((sub, sidx) => (
-                            <li key={sidx}>
-                              <Link
-                                href={`${item.href === "/" ? "" : item.href}${sub.hash}`}
-                                className="block text-[11.5px] text-slate-500 hover:text-yellow-700 hover:font-semibold hover:underline transition-colors py-0.5 truncate"
-                              >
-                                • {sub.label}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-        </nav>
-
-        {/* Footer */}
-        <div className="p-4 border-t border-slate-100">
-          <div className="text-xs text-slate-400 text-center">
-            <div className="font-semibold text-slate-500">ODT-HPC · KKU v1.2 Test beta</div>
-            <div>มิถุนายน 2569</div>
-          </div>
-        </div>
+        <SidebarContent
+          pathname={pathname}
+          mounted={mounted}
+          onLinkClick={() => setMobileOpen(false)}
+        />
       </aside>
     </>
   );

@@ -1,31 +1,26 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import {
-  Server,
-  Menu,
-  X,
-  ExternalLink,
-  FileText,
-  HardDrive,
-} from "lucide-react";
+import { Server, Menu, X } from "lucide-react";
 
-export function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+interface NavbarProps {
+  mobileOpen: boolean;
+  setMobileOpen: (open: boolean) => void;
+}
 
+export function Navbar({ mobileOpen, setMobileOpen }: NavbarProps) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-16 bg-gradient-to-r from-[#C2612B] via-[#C2612B] to-[#F5A623] shadow-md border-b border-orange-850">
       <div className="flex items-center justify-between h-full px-4 lg:px-6">
-        
+
         {/* Logo & Brand */}
         <div className="flex items-center gap-3">
           <button
-            className="lg:hidden text-white/90 hover:text-white p-1.5 rounded-lg hover:bg-white/10"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden text-white/90 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+            onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
           <Link href="/" className="flex items-center gap-2.5 group">
             <div className="bg-white/20 rounded-xl p-1.5 group-hover:bg-white/30 transition-colors">
@@ -43,71 +38,6 @@ export function Navbar() {
           </Link>
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden absolute top-16 left-0 right-0 bg-white border-b border-slate-200 shadow-xl z-50 animate-fade-in">
-          <div className="p-4 space-y-3">
-            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-1">
-              ลิงก์สำคัญด่วน
-            </div>
-            <a
-              href="https://kku.world/4rql5x"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-slate-800 font-bold py-2 px-3 rounded-lg hover:bg-orange-50 hover:text-[#C2612B] transition-colors text-sm"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <FileText size={16} className="text-[#C2612B]" />
-              ขอใช้บริการ HPC Server (kku.world/4rql5x)
-              <ExternalLink size={13} className="ml-auto text-slate-400" />
-            </a>
-            <a
-              href="https://kku.world/sbqzt4"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-slate-800 font-bold py-2 px-3 rounded-lg hover:bg-orange-50 hover:text-[#C2612B] transition-colors text-sm"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <HardDrive size={16} className="text-[#C2612B]" />
-              ขอโปรแกรม / ขอเพิ่มพื้นที่ (kku.world/sbqzt4)
-              <ExternalLink size={13} className="ml-auto text-slate-400" />
-            </a>
-            
-            <hr className="border-slate-100" />
-
-            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-widest px-1">
-              ช่องทางการเข้าใช้งาน
-            </div>
-            <a
-              href="https://odt-hpc.kku.ac.th"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-slate-800 font-medium py-2 px-3 rounded-lg hover:bg-orange-50 transition-colors text-sm"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <ExternalLink size={16} className="text-[#C2612B]" />
-              Open OnDemand (ODT-HPC)
-            </a>
-            <a
-              href="https://odt-hpc.kku.ac.th/jupyter"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-slate-800 font-medium py-2 px-3 rounded-lg hover:bg-orange-50 transition-colors text-sm"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <ExternalLink size={16} className="text-[#C2612B]" />
-              OOD JupyterHub
-            </a>
-            <div
-              className="flex items-center gap-2 text-slate-800 font-medium py-2 px-3 rounded-lg bg-slate-55 text-sm"
-            >
-              <Server size={16} className="text-[#C2612B]" />
-              SSH host: <code className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded text-orange-800 ml-1">odt-hpc-cn.kku.ac.th</code>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 }
